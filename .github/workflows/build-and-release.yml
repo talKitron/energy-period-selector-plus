@@ -80,12 +80,20 @@ jobs:
         with:
           files: |
             dist/energy-period-selector-plus.js
-            README.md
           generate_release_notes: true
           draft: false
           prerelease: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Commit built files to repository
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add dist/
+          git add .gitignore
+          git diff --staged --quiet || git commit -m "chore: update built files for HACS integration [skip ci]"
+          git push
 
   attach-to-release:
     name: Attach Files to Release
@@ -124,7 +132,6 @@ jobs:
         with:
           files: |
             dist/energy-period-selector-plus.js
-            README.md
           tag_name: ${{ github.event.release.tag_name }}
           release_id: ${{ github.event.release.id }}
         env:
