@@ -66,8 +66,15 @@
   "scripts": {
     "start": "pnpm exec rollup -c rollup.config.dev.js --watch",
     "build": "pnpm exec rollup -c",
-    "lint": "pnpm exec eslint src/*.ts",
+    "build:dev": "pnpm exec rollup -c rollup.config.dev.js",
+    "lint": "pnpm exec eslint src/**/*.ts",
+    "lint:fix": "pnpm exec eslint src/**/*.ts --fix",
+    "type-check": "pnpm exec tsc --noEmit",
     "rollup": "pnpm exec rollup -c",
-    "test": "pnpm exec jest"
+    "test": "pnpm exec jest",
+    "test:watch": "pnpm exec jest --watch",
+    "test:coverage": "pnpm exec jest --coverage",
+    "ci": "pnpm run type-check && pnpm run lint && pnpm run test && pnpm run build",
+    "prepublishOnly": "pnpm run ci"
   }
 }
