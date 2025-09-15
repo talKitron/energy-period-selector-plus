@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createThing, HomeAssistant, LovelaceCard, LovelaceCardConfig } from 'custom-card-helpers';
-import { html, TemplateResult } from 'lit';
+import { html, TemplateResult } from 'lit/html';
 import { DEFAULT_ENTITY_CONF, UNIT_PREFIXES } from '../const';
 import { Box, Connection, ConnectionState, EntityConfigOrStr, SectionConfig } from '../types';
 

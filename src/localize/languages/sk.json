@@ -1,0 +1,62 @@
+{
+  "common": {
+    "version": "Verzia",
+    "invalid_configuration": "Neplatná konfigurácia",
+    "show_warning": "Zobraziť upozornenie",
+    "entity_not_found": "Stav entity sa nenašiel",
+    "missing_child": "Chýbajúca podradená entita",
+    "loading": "Načítava sa..."
+  },
+  "toggleButtons": {
+    "custom": "Vlastné",
+    "today": "Dnes"
+  },
+  "editor": {
+    "yaml_disclaimer": "Pre ostatné možnosti použite yaml mód",
+    "docs": "Dokumentácia",
+    "sections": "Sekcie",
+    "section": "Sekcia",
+    "add_section": "+ Pridať sekciu",
+    "add_entity": "+ Pridať entitu",
+    "entity_editor": "Editor entít",
+    "decimals": "desatinné miesta",
+    "fields": {
+      "card_background": "Pozadie karty",
+      "prev_next_buttons": "Zobraziť tlačidlá Predchádzajúce/Ďalšie",
+      "compare_button_type": "Typ tlačidla porovnania",
+      "custom_period_label": "Štítok vlastného obdobia",
+      "compare_button_options": {
+        "icon": "Ikona",
+        "text": "Text"
+      },
+      "period_buttons": "Tlačidlá obdobia",
+      "today_button_type": "Typ tlačidla dnes",
+      "compare_button_label": "Štítok tlačidla porovnania",
+      "period_buttons_options": {
+        "day": "Deň",
+        "week": "Týždeň",
+        "month": "Mesiac",
+        "year": "Rok",
+        "custom": "Vlastné"
+      },
+      "sync_entity": "Entita synchronizácie dátumu",
+      "sync_direction": "Smer synchronizácie",
+      "sync_direction_options": {
+        "both": "Obojsmerne",
+        "to_entity": "Len do entity",
+        "from_entity": "Len z entity"
+      },
+      "layout_mode": "Režim rozloženia",
+      "layout_mode_options": {
+        "standard": "Štandardné (Predvolené)",
+        "compact": "Kompaktné"
+      }
+    },
+    "entity_types": {
+      "entity": "Entita",
+      "remaining_parent_state": "Zostávajúci stav nadradenej entity",
+      "remaining_child_state": "Zostávajúci stav podradenej entity",
+      "passthrough": "Prenos"
+    }
+  }
+}

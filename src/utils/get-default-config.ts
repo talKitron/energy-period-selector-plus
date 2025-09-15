@@ -1,5 +1,5 @@
 import { HomeAssistant } from 'custom-card-helpers';
-import { EnergyFlowCardPlusConfig } from '../energy-period-selector-plus-config';
+import { EnergyPeriodSelectorPlusConfig } from '../energy-period-selector-plus-config';
 
 export const defaultValues = {
   maxFlowRate: 6,
@@ -11,7 +11,7 @@ export const defaultValues = {
   whkWhThreshold: 1000,
 };
 
-export function getDefaultConfig(hass: HomeAssistant): EnergyFlowCardPlusConfig {
+export function getDefaultConfig(hass: HomeAssistant): EnergyPeriodSelectorPlusConfig {
   function checkStrings(entiyId: string, testStrings: string[]): boolean {
     const friendlyName = hass.states[entiyId].attributes.friendly_name;
     return testStrings.some(str => entiyId.includes(str) || friendlyName?.includes(str));

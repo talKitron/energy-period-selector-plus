@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { html, LitElement, nothing } from 'lit';
+import { LitElement } from 'lit';
+import { html, nothing } from 'lit/html';
 import { customElement, property, state } from 'lit/decorators';
 import { HomeAssistant } from './type/home-assistant';
 import { LovelaceCard } from './type/lovelace-card';
@@ -40,7 +41,17 @@ export class EnergyPeriodSelectorPlus extends LitElement implements LovelaceCard
       logError(localize('common.invalid_configuration') || 'Invalid configuration');
       return nothing;
     }
-    const energyPeriodSelectorBase = html` <energy-period-selector-base .hass=${this.hass} ._config=${this._config}></energy-period-selector-base> `;
+    
+    const layoutMode = this._config?.layout_mode || 'standard';
+    const isCompactMode = layoutMode === 'compact';
+    
+    const energyPeriodSelectorBase = html` <energy-period-selector-base .hass=${this.hass} ._config=${this._config} .collectionKey=${this._config?.collection_key}></energy-period-selector-base> `;
+    
+    // In compact mode, don't use ha-card wrapper even if card_background is true
+    if (isCompactMode) {
+      return energyPeriodSelectorBase;
+    }
+    
     return this._config?.card_background
       ? html` <ha-card .header=${this._config?.title}> ${energyPeriodSelectorBase}</ha-card> `
       : html` ${energyPeriodSelectorBase} `;

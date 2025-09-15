@@ -4,11 +4,12 @@
 import { LitElement, css, html, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { fireEvent, HomeAssistant, LovelaceCardEditor } from 'custom-card-helpers';
-import { EnergyCardBaseConfig } from '../type/energy-card-base-config';
-import { any, assert, assign, boolean, integer, number, object, optional, string } from 'superstruct';
-import { localize } from '../localize/localize';
+import { assert, assign, boolean, object, optional, string, any } from 'superstruct';
 import memoizeOne from 'memoize-one';
+
+import { localize } from '../localize/localize';
 import { EnergyPeriodSelectorPlusConfig } from '../energy-period-selector-plus-config';
+import { EnergyCardBaseConfig } from '../type/energy-card-base-config';
 import { SchemaUnion } from './types/schema-union';
 
 export const loadHaForm = async () => {
@@ -43,9 +44,13 @@ export class EnergyPeriodSelectorEditor extends LitElement implements LovelaceCa
           period_buttons: optional(any()),
           custom_period_label: optional(string()),
           compare_button_label: optional(string()),
-        }),
-      ),
+          sync_entity: optional(string()),
+          sync_direction: optional(string()),
+          layout_mode: optional(string()),
+        })
+      )
     );
+
     this._config = config;
   }
 
@@ -55,7 +60,7 @@ export class EnergyPeriodSelectorEditor extends LitElement implements LovelaceCa
   }
 
   private _schema = memoizeOne(
-    (showCompareLabel, showCustomPeriodLabel) =>
+    (showCompareLabel: boolean, showCustomPeriodLabel: boolean) =>
       [
         {
           type: 'grid',
@@ -70,6 +75,18 @@ export class EnergyPeriodSelectorEditor extends LitElement implements LovelaceCa
               selector: { boolean: {} },
             },
           ],
+        },
+        {
+          name: 'layout_mode',
+          selector: {
+            select: {
+              options: [
+                { value: 'standard', label: localize('editor.fields.layout_mode_options.standard') },
+                { value: 'compact', label: localize('editor.fields.layout_mode_options.compact') },
+              ],
+              mode: 'dropdown',
+            },
+          },
         },
         {
           type: 'grid',
@@ -137,14 +154,18 @@ export class EnergyPeriodSelectorEditor extends LitElement implements LovelaceCa
               : []),
           ],
         },
-      ] as const,
+
+        // NOTE: We intentionally do NOT include the sync row here.
+        // It is rendered manually to keep both labels above the inputs.
+      ] as const
   );
 
   protected render() {
     if (!this.hass || !this._config) {
       return nothing;
     }
-    const data = {
+
+    const data: EnergyPeriodSelectorPlusConfig = {
       ...this._config,
       card_background: this._config.card_background ?? false,
       today_button: this._config.today_button ?? true,
@@ -152,9 +173,16 @@ export class EnergyPeriodSelectorEditor extends LitElement implements LovelaceCa
       compare_button_type: this._config.compare_button_type ?? '',
       today_button_type: this._config.today_button_type ?? 'text',
       period_buttons: this._config.period_buttons ?? ['day', 'week', 'month', 'year'],
+      sync_entity: this._config.sync_entity ?? '',
+      sync_direction: this._config.sync_direction ?? 'both',
+      layout_mode: this._config.layout_mode ?? 'standard',
     };
 
-    const schema = this._schema(data.compare_button_type === 'text', data.period_buttons.includes('custom'));
+    const schema = this._schema(
+      data.compare_button_type === 'text',
+      (data.period_buttons ?? []).includes('custom')
+    );
+
     return html`
       <ha-form
         .hass=${this.hass}
@@ -163,6 +191,8 @@ export class EnergyPeriodSelectorEditor extends LitElement implements LovelaceCa
         .computeLabel=${this._computeLabelCallback}
         @value-changed=${this._valueChanged}
       ></ha-form>
+
+      ${this._renderSyncRow(data)}
     `;
   }
 
@@ -171,9 +201,55 @@ export class EnergyPeriodSelectorEditor extends LitElement implements LovelaceCa
     fireEvent(this, 'config-changed', { config });
   }
 
-  private _computeLabelCallback = schema => {
+  private _computeLabelCallback = (schema: any) => {
     return localize(`editor.fields.${schema.name}`) || `not found: ${schema.name}`;
   };
+
+  /**
+   * Renders the sync fields manually to achieve proper two-column layout
+   * with labels above inputs, which isn't possible with ha-form schema alone
+   */
+  private _renderSyncRow(data: EnergyPeriodSelectorPlusConfig) {
+    return html`
+      <div class="two-col">
+        <div class="field">
+          <div class="caption">${localize('editor.fields.sync_entity')}</div>
+          <ha-selector
+            .hass=${this.hass}
+            .selector=${{ entity: { domain: ['input_datetime'] } }}
+            .value=${data.sync_entity ?? ''}
+            @value-changed=${(e: CustomEvent) => this._patch('sync_entity', e.detail.value || '')}
+          ></ha-selector>
+        </div>
+
+        <div class="field">
+          <div class="caption">${localize('editor.fields.sync_direction')}</div>
+          <ha-selector
+            .hass=${this.hass}
+            .selector=${{
+              select: {
+                options: [
+                  { value: 'both', label: localize('editor.fields.sync_direction_options.both') },
+                  { value: 'to-entity', label: localize('editor.fields.sync_direction_options.to_entity') },
+                  { value: 'from-entity', label: localize('editor.fields.sync_direction_options.from_entity') },
+                ],
+                mode: 'dropdown',
+              },
+            }}
+            .value=${data.sync_direction ?? 'both'}
+            @value-changed=${(e: CustomEvent) => this._patch('sync_direction', e.detail.value)}
+          ></ha-selector>
+        </div>
+      </div>
+    `;
+  }
+
+
+  // Light helper to update config and notify Lovelace
+  private _patch<K extends keyof EnergyPeriodSelectorPlusConfig>(key: K, value: EnergyPeriodSelectorPlusConfig[K]) {
+    this._config = { ...this._config!, [key]: value };
+    fireEvent(this, 'config-changed', { config: this._config });
+  }
 
   static get styles() {
     return css`
@@ -210,6 +286,26 @@ export class EnergyPeriodSelectorEditor extends LitElement implements LovelaceCa
         position: relative;
         top: -4px;
         right: 1px;
+      }
+
+      /* Custom row layout */
+      .two-col {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        margin-top: 12px;
+      }
+      .field {
+        width: 100%;
+      }
+      .caption {
+        font-size: var(--mdc-typography-caption-font-size, 0.875rem);
+        color: var(--secondary-text-color);
+        margin: 0 0 6px 0;
+      }
+      ha-select,
+      ha-entity-picker {
+        width: 100%;
       }
     `;
   }
