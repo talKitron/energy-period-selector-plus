@@ -81,7 +81,6 @@ jobs:
           files: |
             dist/energy-period-selector-plus.js
             README.md
-            CHANGELOG.md
           generate_release_notes: true
           draft: false
           prerelease: false
@@ -126,7 +125,6 @@ jobs:
           files: |
             dist/energy-period-selector-plus.js
             README.md
-            CHANGELOG.md
           tag_name: ${{ github.event.release.tag_name }}
           release_id: ${{ github.event.release.id }}
         env:
