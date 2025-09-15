@@ -3,7 +3,7 @@ import commonjs from 'rollup-plugin-commonjs';
 import nodeResolve from 'rollup-plugin-node-resolve';
 import babel from 'rollup-plugin-babel';
 import { terser } from 'rollup-plugin-terser';
-import serve from 'rollup-plugin-serve';
+// import serve from 'rollup-plugin-serve';
 import json from '@rollup/plugin-json';
 // import minifyHTML from 'rollup-plugin-minify-html-literals';
 
@@ -29,7 +29,7 @@ const plugins = [
   babel({
     exclude: 'node_modules/**',
   }),
-  dev && serve(serveopts),
+  // dev && serve(serveopts),
   // !dev && minifyHTML(),
   !dev && terser({ output: { comments: false } }),
 ];
