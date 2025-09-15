@@ -21,6 +21,13 @@ jest.mock('custom-card-helpers', () => ({
   getEnergyDataCollection: jest.fn(),
 }));
 
+jest.mock('@mdi/js', () => ({
+  mdiCompare: 'mdi-compare',
+  mdiCompareRemove: 'mdi-compare-remove',
+  mdiCalendarTodayOutline: 'mdi-calendar-today-outline',
+}));
+
+// Mock date-fns before any imports
 jest.mock('date-fns', () => ({
   addDays: jest.fn((date, days) => new Date(date.getTime() + days * 24 * 60 * 60 * 1000)),
   addWeeks: jest.fn((date, weeks) => new Date(date.getTime() + weeks * 7 * 24 * 60 * 60 * 1000)),

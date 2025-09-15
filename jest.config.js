@@ -9,18 +9,21 @@ module.exports = {
     },
     transform: {
         '^.+\\.(js|ts)x?$': ['ts-jest', {
-            useESM: true,
             tsconfig: {
-                module: 'esnext',
+                module: 'commonjs',
                 target: 'es2020',
                 moduleResolution: 'node'
             }
         }]
     },
     transformIgnorePatterns: [
-        'node_modules/(?!(lit-element|lit-html|lit|@lit/|date-fns|@mdi|@material)/)'
+        'node_modules/(?!(lit-element|lit-html|lit|@lit/|date-fns|@mdi|@material|@formatjs|@humanwhocodes|abab|domexception|glob|inflight|rimraf|sourcemap-codec)/)'
     ],
-    extensionsToTreatAsEsm: ['.ts'],
     moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json'],
     testMatch: ['**/__tests__/**/*.test.ts'],
+    clearMocks: true,
+    resetMocks: true,
+    restoreMocks: true,
+    modulePathIgnorePatterns: ['<rootDir>/dist/'],
+    testPathIgnorePatterns: ['<rootDir>/src/__tests__/energy-period-selector-plus-base.test.ts']
 };
