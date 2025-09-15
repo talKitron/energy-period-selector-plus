@@ -1,12 +1,13 @@
 # Energy Period Selector Plus
 
-[![ko-fi support](https://img.shields.io/badge/support-me-ff5e5b?style=flat-square&logo=ko-fi)](https://ko-fi.com/flixlix)
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/flixlix/energy-period-selector-plus?style=flat-square)
-![GitHub all releases](https://img.shields.io/github/downloads/flixlix/energy-period-selector-plus/total?style=flat-square)
-![commit_activity](https://img.shields.io/github/commit-activity/y/flixlix/energy-period-selector-plus?color=brightgreen&label=Commits&style=flat-square)
+[![ko-fi support](https://img.shields.io/badge/support-me-ff5e5b?style=flat-square&logo=ko-fi)](https://ko-fi.com/talkitron)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/talKitron/energy-period-selector-plus?style=flat-square)
+![GitHub all releases](https://img.shields.io/github/downloads/talKitron/energy-period-selector-plus/total?style=flat-square)
+![commit_activity](https://img.shields.io/github/commit-activity/y/talKitron/energy-period-selector-plus?color=brightgreen&label=Commits&style=flat-square)
 
-![Hero Image](https://github.com/flixlix/energy-period-selector-plus/assets/61006057/93068f68-b989-4ff1-95bf-52f6e394c85f)
-<img width="1244" alt="New Hero Image" src="https://github.com/flixlix/energy-period-selector-plus/assets/61006057/b5064161-b8dd-4fa5-865a-5815635d3cbb">
+![Hero Image](<img width="1049" height="181" alt="image" src="https://github.com/user-attachments/assets/212bcaa3-fe10-4b2c-a7ad-fb07a3bba5f2" />)
+<img width="1042" height="237" alt="image" src="https://github.com/user-attachments/assets/2c170644-aa55-41c2-8efc-5a54292ec8ce" />
+
 
 
 ## 🎯 Goal
@@ -62,7 +63,7 @@ To install this:
 
 <details>  <summary>Manual Install</summary>
 
-1. Download and copy `energy-period-selector-plus.js` from the [latest release](https://github.com/flixlix/energy-period-selector-plus/releases/latest) into your `config/www` directory.
+1. Download and copy `energy-period-selector-plus.js` from the [latest release](https://github.com/talKitron/energy-period-selector-plus/releases/latest) into your `config/www` directory.
 
 2. Add the resource reference as decribed below.
 
@@ -97,7 +98,8 @@ In addition to that, I developed a UI Editor, making it even easier to change th
 
 The UI Editor looks like this:
 
-<img width="1049" alt="Bildschirmfoto 2023-05-20 um 22 01 46" src="https://github.com/flixlix/energy-period-selector-plus/assets/61006057/4f12ecd5-e1b5-4362-994c-228fa0fffdd5">
+<img width="1238" height="1132" alt="image" src="https://github.com/user-attachments/assets/b5365362-93a4-4a55-bd67-a418d93b39cd" />
+
 
 
 
