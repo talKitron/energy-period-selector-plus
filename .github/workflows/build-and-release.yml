@@ -90,6 +90,7 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
+          git fetch origin main
           git checkout main
           git add -f dist/
           git diff --staged --quiet || git commit -m "chore: update built files for HACS integration [skip ci]"
