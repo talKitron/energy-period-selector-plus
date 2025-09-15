@@ -80,7 +80,6 @@ jobs:
         with:
           files: |
             dist/energy-period-selector-plus.js
-            hacs.json
             README.md
             CHANGELOG.md
           generate_release_notes: true
@@ -126,7 +125,6 @@ jobs:
         with:
           files: |
             dist/energy-period-selector-plus.js
-            hacs.json
             README.md
             CHANGELOG.md
           tag_name: ${{ github.event.release.tag_name }}
