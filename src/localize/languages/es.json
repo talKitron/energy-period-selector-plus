@@ -7,9 +7,10 @@
         "missing_child": "Entidad secundaria faltante",
         "loading": "Cargando..."
     },
-    "toggleButtons": {
-        "custom": "Personalizado"
-    },
+  "toggleButtons": {
+    "custom": "Personalizado",
+    "today": "Hoy"
+  },
     "editor": {
         "yaml_disclaimer": "Por favor, utiliza el modo YAML para las otras opciones",
         "docs": "Documentación",
@@ -37,6 +38,18 @@
                 "month": "Mes",
                 "year": "Año",
                 "custom": "Personalizado"
+            },
+            "sync_entity": "Entidad de Fecha de Sincronización",
+            "sync_direction": "Dirección de Sincronización",
+            "sync_direction_options": {
+                "both": "Ambas Direcciones",
+                "to_entity": "Solo a Entidad",
+                "from_entity": "Solo desde Entidad"
+            },
+            "layout_mode": "Modo de Diseño",
+            "layout_mode_options": {
+                "standard": "Estándar (Predeterminado)",
+                "compact": "Compacto"
             }
         },
         "entity_types": {

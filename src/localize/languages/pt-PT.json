@@ -7,9 +7,10 @@
         "missing_child": "Entidade filha em falta",
         "loading": "A carregar..."
     },
-    "toggleButtons": {
-        "custom": "Personalizado"
-    },
+  "toggleButtons": {
+    "custom": "Personalizado",
+    "today": "Hoje"
+  },
     "editor": {
         "yaml_disclaimer": "Por favor, utilize o modo yaml para as outras opções",
         "docs": "Documentação",
@@ -37,6 +38,18 @@
                 "month": "Mês",
                 "year": "Ano",
                 "custom": "Personalizado"
+            },
+            "sync_entity": "Entidade de Data de Sincronização",
+            "sync_direction": "Direção de Sincronização",
+            "sync_direction_options": {
+                "both": "Ambas as Direções",
+                "to_entity": "Apenas para Entidade",
+                "from_entity": "Apenas da Entidade"
+            },
+            "layout_mode": "Modo de Layout",
+            "layout_mode_options": {
+                "standard": "Padrão (Padrão)",
+                "compact": "Compacto"
             }
         },
         "entity_types": {

@@ -8,7 +8,8 @@
     "loading": "Loading..."
   },
   "toggleButtons": {
-    "custom": "Custom"
+    "custom": "Custom",
+    "today": "Today"
   },
   "editor": {
     "yaml_disclaimer": "Please use yaml mode for the other options",
@@ -37,6 +38,18 @@
         "month": "Month",
         "year": "Year",
         "custom": "Custom"
+      },
+      "sync_entity": "Sync Date Entity",
+      "sync_direction": "Sync Direction",
+      "sync_direction_options": {
+        "both": "Both Ways",
+        "to_entity": "To Entity Only",
+        "from_entity": "From Entity Only"
+      },
+      "layout_mode": "Layout Mode",
+      "layout_mode_options": {
+        "standard": "Standard (Default)",
+        "compact": "Compact"
       }
     },
     "entity_types": {
