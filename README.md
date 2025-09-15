@@ -221,6 +221,7 @@ sync_direction: both
 ```
 
 <hr/>
+<img width="514" height="99" alt="image" src="https://github.com/user-attachments/assets/fe53ef8c-c4a6-4d1a-9536-c012e0d85746" />
 
 
 ```yaml
@@ -233,7 +234,7 @@ compare_button_type: text
 ```
 
 <hr/>
-
+<img width="445" height="57" alt="image" src="https://github.com/user-attachments/assets/cce68151-04ad-48ad-9e06-671666921159" />
 
 ```yaml
 # Perfect for header_cards configuration
