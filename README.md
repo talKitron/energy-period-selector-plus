@@ -5,7 +5,7 @@
 ![GitHub all releases](https://img.shields.io/github/downloads/talKitron/energy-period-selector-plus/total?style=flat-square)
 ![commit_activity](https://img.shields.io/github/commit-activity/y/talKitron/energy-period-selector-plus?color=brightgreen&label=Commits&style=flat-square)
 
-![Hero Image](<img width="1049" height="181" alt="image" src="https://github.com/user-attachments/assets/212bcaa3-fe10-4b2c-a7ad-fb07a3bba5f2" />)
+![Hero Image](https://github.com/user-attachments/assets/212bcaa3-fe10-4b2c-a7ad-fb07a3bba5f2)
 <img width="1042" height="237" alt="image" src="https://github.com/user-attachments/assets/2c170644-aa55-41c2-8efc-5a54292ec8ce" />
 
 
