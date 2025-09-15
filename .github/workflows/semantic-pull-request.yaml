@@ -1,4 +1,4 @@
-name: "Lint PR"
+name: "Lint PR & Validate PR Title"
 
 on:
   pull_request_target:
@@ -8,10 +8,47 @@ on:
       - synchronize
 
 jobs:
-  main:
-    name: Validate PR title
+  validate-title:
+    name: Validate PR Title
     runs-on: ubuntu-latest
     steps:
       - uses: amannn/action-semantic-pull-request@v4
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  lint-code:
+    name: Lint Code
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: latest
+          
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
+            
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+        
+      - name: Run ESLint
+        run: pnpm run lint
+        
+      - name: Run TypeScript check
+        run: pnpm run type-check
+        
+      - name: Run tests
+        run: pnpm test
