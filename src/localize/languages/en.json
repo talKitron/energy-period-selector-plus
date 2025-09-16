@@ -42,7 +42,7 @@
       "sync_entity": "Sync Date Entity",
       "sync_direction": "Sync Direction",
       "sync_direction_options": {
-        "both": "Both Ways",
+        "both": "Bi-directional",
         "to_entity": "To Entity Only",
         "from_entity": "From Entity Only"
       },

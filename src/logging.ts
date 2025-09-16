@@ -4,7 +4,7 @@ import { version } from '../package.json';
 
 // Log Version
 console.groupCollapsed(`%c⚡ Energy Period Selector Plus v${version} is installed`, 'color: #488fc2; font-weight: bold');
-console.log('Readme:', 'https://github.com/flixlix/energy-period-selector-plus');
+console.log('Readme:', 'https://github.com/talKitron/energy-period-selector-plus');
 console.groupEnd();
 
 export const logError = debounce((error: string) => {
