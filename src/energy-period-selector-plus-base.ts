@@ -217,30 +217,27 @@ export class EnergyPeriodSelectorBase extends SubscribeMixin(LitElement) {
       todayButtonText; // Use custom HTML button for full control
 
     // Renders compare button based on compare_button_type configuration
-    const compareButton = this._config?.compare_button_type ? html`
-      <div class="compare-button-row">
-        ${this._config?.compare_button_type === 'icon'
-          ? html`<ha-icon-button
-              class="compare ${this._compare ? 'active' : ''}"
-              .path=${this._compare ? mdiCompareRemove : mdiCompare}
-              @click=${this._toggleCompare}
-              dense
-              outlined
-            >
-              ${this._config.compare_button_label ?? this.hass.localize('ui.panel.lovelace.components.energy_period_selector.compare')}
-            </ha-icon-button>`
-              : this._config?.compare_button_type === 'text'
-              ? html`<button class="compare-button-custom ${this._compare ? 'active' : ''}" @click=${this._toggleCompare}>
-                  ${this._config.compare_button_label ?? this.hass.localize('ui.panel.lovelace.components.energy_period_selector.compare')}
-                </button>`
-            : nothing}
-      </div>
+    const compareButtonIcon = this._config?.compare_button_type === 'icon' ? html`
+      <ha-icon-button
+        class="compare ${this._compare ? 'active' : ''}"
+        .path=${this._compare ? mdiCompareRemove : mdiCompare}
+        @click=${this._toggleCompare}
+      >
+        ${this._config.compare_button_label ?? this.hass.localize('ui.panel.lovelace.components.energy_period_selector.compare')}
+      </ha-icon-button>
+    ` : nothing;
+
+    const compareButtonText = this._config?.compare_button_type === 'text' ? html`
+      <button class="compare-button-custom ${this._compare ? 'active' : ''}" @click=${this._toggleCompare}>
+        ${this._config.compare_button_label ?? this.hass.localize('ui.panel.lovelace.components.energy_period_selector.compare')}
+      </button>
     ` : nothing;
 
     // Renders period buttons
     const periodButtonsSection = html`
       <div class="period-buttons-row">
         ${this._renderPeriodButtons(periodButtons)}
+        ${compareButtonIcon}
       </div>
     `;
 
@@ -288,7 +285,7 @@ export class EnergyPeriodSelectorBase extends SubscribeMixin(LitElement) {
     // Both sections are right-aligned
     return html`
       <div class="${cssClasses}">
-        ${compareButton}
+        ${compareButtonText}
         ${periodButtonsSection}
         ${dateControlsSection}
       </div>

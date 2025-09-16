@@ -29,6 +29,8 @@ export const stylesBase = css`
   
   .energy-period-selector.compact-mode .period-buttons-row {
     margin-bottom: 0;
+    height: 20px;
+    align-items: center;
   }
   
   .energy-period-selector.compact-mode .date-controls-row {
@@ -36,12 +38,22 @@ export const stylesBase = css`
   }
   
   
+  /* Common compact button sizing */
+  .compact-button-18px {
+    height: 18px;
+    min-width: 35px;
+    padding: 2px 6px;
+    font-size: 10px;
+    vertical-align: middle;
+  }
+
   /* Compact button sizing */
   .energy-period-selector.compact-mode .period-button-custom {
     height: 18px;
     min-width: 35px;
     padding: 2px 6px;
     font-size: 10px;
+    vertical-align: middle;
   }
   
   .energy-period-selector.compact-mode .today-button-custom {
@@ -49,6 +61,7 @@ export const stylesBase = css`
     min-width: 35px;
     padding: 2px 6px;
     font-size: 10px;
+    vertical-align: middle;
   }
   
   .energy-period-selector.compact-mode .compare-button-custom {
@@ -56,6 +69,11 @@ export const stylesBase = css`
     min-width: 35px;
     padding: 2px 6px;
     font-size: 10px;
+    vertical-align: middle;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.25rem;
   }
   
   /* Compact navigation controls */
@@ -81,16 +99,48 @@ export const stylesBase = css`
     vertical-align: middle !important;
   }
   
+  /* Common icon button sizing - 20px */
+  .icon-button-20px {
+    --mdc-icon-button-size: 20px !important;
+    height: 20px !important;
+    width: 20px !important;
+    min-height: 20px !important;
+    min-width: 20px !important;
+    max-height: 20px !important;
+    max-width: 20px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    vertical-align: middle !important;
+    line-height: 20px !important;
+  }
+
+  /* Compact today and compare icons */
+  .energy-period-selector.compact-mode .today-icon,
+  .energy-period-selector.compact-mode .compare {
+    --mdc-icon-button-size: 20px !important;
+    height: 20px !important;
+    width: 20px !important;
+    min-height: 20px !important;
+    min-width: 20px !important;
+    max-height: 20px !important;
+    max-width: 20px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    vertical-align: middle !important;
+    line-height: 20px !important;
+  }
+  
+  /* Date display base styling */
+  .date-display {
+    color: var(--primary-text-color, #000000) !important;
+  }
+
   /* Compact date display */
   .energy-period-selector.compact-mode .date-display {
     font-size: 12px;
     font-weight: 400;
-    color: var(--primary-text-color, #000000) !important;
-  }
-  
-  /* Ensure date display uses theme colors in all modes */
-  .date-display {
-    color: var(--primary-text-color, #000000) !important;
   }
   
   .mdc-text-field__icon .mdc-text-field__icon--trailing {
@@ -108,6 +158,7 @@ export const stylesBase = css`
     align-items: center;
     gap: 0.5rem;
     flex-wrap: wrap;
+    height: 20px;
   }
   .date-controls-row {
     display: flex;
@@ -119,13 +170,6 @@ export const stylesBase = css`
   .date-display {
     font-size: 16px;
     font-weight: 500;
-    color: var(--primary-text-color);
-  }
-  .compare-button-row {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    margin-bottom: 0.5rem;
   }
   
   .navigation-controls {
@@ -140,13 +184,13 @@ export const stylesBase = css`
   .energy-period-selector .navigation-controls ha-icon-button-next,
   .navigation-controls ha-icon-button-prev,
   .navigation-controls ha-icon-button-next {
+    --mdc-icon-button-size: 20px !important;
     height: 20px !important;
     width: 20px !important;
     min-height: 20px !important;
     min-width: 20px !important;
     max-height: 20px !important;
     max-width: 20px !important;
-    --mdc-icon-button-size: 20px !important;
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
@@ -165,13 +209,13 @@ export const stylesBase = css`
   /* Target mwc-icon-button elements specifically */
   .navigation-controls ha-icon-button-prev mwc-icon-button,
   .navigation-controls ha-icon-button-next mwc-icon-button {
+    --mdc-icon-button-size: 20px !important;
     height: 20px !important;
     width: 20px !important;
     min-height: 20px !important;
     min-width: 20px !important;
     max-height: 20px !important;
     max-width: 20px !important;
-    --mdc-icon-button-size: 20px !important;
   }
   
   /* Custom HTML button group - full control */
@@ -255,218 +299,7 @@ export const stylesBase = css`
     }
   }
 
-  .period-buttons {
-    display: flex;
-    gap: 0;
-    align-items: center;
-    background-color: transparent;
-    border-radius: 8px;
-    padding: 0;
-    border: none;
-    box-shadow: none;
-  }
-  .period-button {
-    background: var(--card-background-color, #ffffff);
-    border: 1px solid #000000;
-    color: var(--primary-text-color);
-    padding: 4px 12px;
-    font-size: 12px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    position: relative;
-    flex: 1;
-    height: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-transform: uppercase;
-    font-family: inherit;
-  }
-  .period-button:first-child {
-    border-top-left-radius: 2px;
-    border-bottom-left-radius: 2px;
-  }
-  .period-button:last-child {
-    border-top-right-radius: 2px;
-    border-bottom-right-radius: 2px;
-  }
-  .period-button:not(:last-child) {
-    border-right: 1px solid #000000;
-  }
-  .period-button.active {
-    background-color: #f0f0f0 !important;
-    color: var(--primary-text-color) !important;
-    z-index: 1;
-  }
-  
-  /* Dark mode support for selected button */
-  @media (prefers-color-scheme: dark) {
-    .period-button.active {
-      background-color: #505050 !important;
-      color: var(--primary-text-color) !important;
-    }
-  }
-  
-  /* More specific selector to override any conflicting styles */
-  .period-buttons .period-button.active {
-    background-color: #f0f0f0 !important;
-    color: var(--primary-text-color) !important;
-  }
-  
-  /* Force override for any inherited text color */
-  .period-button.active * {
-    color: var(--primary-text-color) !important;
-  }
-  
-  /* Most specific selector possible */
-  .energy-period-selector .period-buttons .period-button.active {
-    background-color: #f0f0f0 !important;
-    color: var(--primary-text-color) !important;
-  }
-  
-  /* Override any potential inherited styles */
-  .energy-period-selector .period-buttons .period-button.active,
-  .energy-period-selector .period-buttons .period-button.active:hover,
-  .energy-period-selector .period-buttons .period-button.active:focus {
-    color: var(--primary-text-color) !important;
-    background-color: #f0f0f0 !important;
-  }
-  
-  /* Dark mode support for all selectors */
-  @media (prefers-color-scheme: dark) {
-    .period-buttons .period-button.active,
-    .period-button.active *,
-    .energy-period-selector .period-buttons .period-button.active,
-    .energy-period-selector .period-buttons .period-button.active:hover,
-    .energy-period-selector .period-buttons .period-button.active:focus {
-      background-color: #505050 !important;
-      color: var(--primary-text-color) !important;
-    }
-  }
-  .period-button:hover:not(.active) {
-    background-color: var(--divider-color, #404040);
-  }
-  .period-button:focus {
-    outline: none;
-  }
-  .period-button:focus-visible {
-    outline: 2px solid var(--primary-color);
-    outline-offset: 2px;
-  }
 
-  /* Native fallback styling using Home Assistant theme variables */
-  .period-buttons-native {
-    display: flex;
-    gap: 0;
-    align-items: center;
-    background-color: transparent;
-    border-radius: 8px;
-    padding: 0;
-    border: none;
-    box-shadow: none;
-  }
-  .period-button-native {
-    background: var(--card-background-color, #ffffff);
-    border: 1px solid var(--divider-color, #000000);
-    color: var(--primary-text-color);
-    padding: 4px 12px;
-    font-size: 12px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    position: relative;
-    flex: 1;
-    height: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-transform: uppercase;
-    font-family: inherit;
-  }
-  .period-button-native:first-child {
-    border-top-left-radius: 2px;
-    border-bottom-left-radius: 2px;
-  }
-  .period-button-native:last-child {
-    border-top-right-radius: 2px;
-    border-bottom-right-radius: 2px;
-  }
-  .period-button-native:not(:last-child) {
-    border-right: 1px solid var(--divider-color, #000000);
-  }
-  .period-button-native.active {
-    background-color: var(--primary-color) !important;
-    color: var(--text-primary-on-color, #ffffff) !important;
-    z-index: 1;
-  }
-  .period-button-native:hover:not(.active) {
-    background-color: var(--divider-color, #404040);
-  }
-  .period-button-native:focus {
-    outline: none;
-  }
-  .period-button-native:focus-visible {
-    outline: 2px solid var(--primary-color);
-    outline-offset: 2px;
-  }
-
-  /* Native ha-button toggle group styling */
-  .period-buttons-ha {
-    display: flex;
-    gap: 0;
-    align-items: center;
-    background-color: transparent;
-    border-radius: 8px;
-    padding: 0;
-    border: none;
-    box-shadow: none;
-  }
-  .period-button-ha {
-    --mdc-button-height: 24px;
-    --mdc-button-min-width: 50px;
-    --mdc-typography-button-font-size: 12px;
-    --mdc-typography-button-font-weight: 500;
-    --mdc-typography-button-text-transform: uppercase;
-    --mdc-typography-button-letter-spacing: 0.0892857143em;
-    --mdc-typography-button-line-height: 1.75;
-    --mdc-typography-button-font-family: var(--mdc-typography-font-family, "Roboto", sans-serif);
-    --mdc-shape-small: 0px;
-    border-radius: 0 !important;
-    margin: 0 !important;
-    flex: 1;
-  }
-  .period-button-ha:first-child {
-    border-top-left-radius: 2px !important;
-    border-bottom-left-radius: 2px !important;
-  }
-  .period-button-ha:last-child {
-    border-top-right-radius: 2px !important;
-    border-bottom-right-radius: 2px !important;
-  }
-  .period-button-ha:not(:last-child) {
-    border-right: 1px solid #202124 !important;
-  }
-  .period-button-ha[outlined] {
-    --mdc-button-outline-color: #202124;
-    --mdc-button-outline-width: 1px;
-    background: var(--card-background-color, #ffffff) !important;
-    color: var(--primary-text-color) !important;
-    border: 1px solid #202124 !important;
-  }
-  .period-button-ha[raised] {
-    background: #d2d3d3 !important;
-    color: var(--text-primary-on-color, #ffffff) !important;
-    --mdc-button-outline-width: 0px;
-    border: 1px solid #d2d3d3 !important;
-    z-index: 1;
-  }
-  .period-button-ha:hover:not([raised]) {
-    background-color: var(--divider-color, #404040) !important;
-  }
-  .period-button:active {
-    transform: translateY(1px);
-  }
   
   /* Custom Today button - matches period buttons */
   .today-button-custom {
@@ -605,7 +438,7 @@ export const stylesBase = css`
     text-transform: uppercase !important;
   }
   
-  /* Custom Compare button - matches Today button */
+  /* Text compare button - positioned above button group */
   .compare-button-custom {
     background: var(--card-background-color, #ffffff);
     border: 1px solid var(--divider-color, #e0e0e0);
@@ -625,6 +458,9 @@ export const stylesBase = css`
     text-transform: uppercase;
     letter-spacing: 0.0892857143em;
     outline: none;
+    vertical-align: middle;
+    margin-bottom: 0.5rem;
+    align-self: flex-end;
   }
   
   .compare-button-custom:hover {
@@ -800,6 +636,18 @@ export const stylesBase = css`
   }
   .compare {
     position: relative;
+    height: 20px !important;
+    width: 20px !important;
+    min-height: 20px !important;
+    min-width: 20px !important;
+    max-height: 20px !important;
+    max-width: 20px !important;
+    --mdc-icon-button-size: 20px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    vertical-align: middle !important;
+    line-height: 20px !important;
   }
   :host {
     --mdc-button-outline-color: currentColor;

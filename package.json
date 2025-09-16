@@ -1,6 +1,6 @@
 {
   "name": "energy-period-selector-plus",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "Energy Period Selector Plus",
   "keywords": [
     "home-assistant",
@@ -12,7 +12,7 @@
     "dashboard"
   ],
   "module": "energy-period-selector-plus.js",
-  "repository": "git@github.com:flixlix/energy-period-selector-plus.git",
+  "repository": "git@github.com:talKitron/energy-period-selector-plus.git",
   "author": "Luca Félix <luca.ziegler.felix@gmail.com>",
   "dependencies": {
     "@material/mwc-button": "0.27.0",

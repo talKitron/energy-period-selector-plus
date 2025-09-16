@@ -42,7 +42,7 @@
             "sync_entity": "Entidad de Fecha de Sincronización",
             "sync_direction": "Dirección de Sincronización",
             "sync_direction_options": {
-                "both": "Ambas Direcciones",
+                "both": "Bidireccional",
                 "to_entity": "Solo a Entidad",
                 "from_entity": "Solo desde Entidad"
             },
