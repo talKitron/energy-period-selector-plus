@@ -211,18 +211,6 @@ custom_period_label: </|\>
 ```
 
 <hr/>
-<img width="1071" alt="Entity Sync Configuration" src="https://github.com/flixlix/energy-period-selector-plus/assets/61006057/entity-sync-example">
-
-```yaml
-type: custom:energy-period-selector-plus
-card_background: true
-title: Entity Sync Example
-period_buttons: [day, week, month, year]
-sync_entity: input_datetime.solar_chart_date
-sync_direction: both
-```
-
-<hr/>
 <img width="514" height="99" alt="image" src="https://github.com/user-attachments/assets/fe53ef8c-c4a6-4d1a-9536-c012e0d85746" />
 
 
