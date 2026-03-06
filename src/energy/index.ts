@@ -48,6 +48,10 @@ export const emptyGridSourceEnergyPreference = (): GridSourceTypeEnergyPreferenc
   type: 'grid',
   flow_from: [],
   flow_to: [],
+  stat_energy_from: '',
+  stat_energy_to: '',
+  stat_cost: null,
+  stat_compensation: null,
   cost_adjustment_day: 0,
 });
 
@@ -118,8 +122,15 @@ export interface FlowToGridSourceEnergyPreference {
 export interface GridSourceTypeEnergyPreference {
   type: 'grid';
 
-  flow_from: FlowFromGridSourceEnergyPreference[];
-  flow_to: FlowToGridSourceEnergyPreference[];
+  // Pre-2026.3 nested format
+  flow_from?: FlowFromGridSourceEnergyPreference[];
+  flow_to?: FlowToGridSourceEnergyPreference[];
+
+  // 2026.3+ flat format
+  stat_energy_from?: string;
+  stat_energy_to?: string;
+  stat_cost?: string | null;
+  stat_compensation?: string | null;
 
   cost_adjustment_day: number;
 }
@@ -300,22 +311,44 @@ export const getReferencedStatisticIds = (prefs: EnergyPreferences, info: Energy
     }
 
     // grid source
-    for (const flowFrom of source.flow_from) {
-      statIDs.push(flowFrom.stat_energy_from);
-      if (flowFrom.stat_cost) {
-        statIDs.push(flowFrom.stat_cost);
+    if (source.flow_from && source.flow_from.length) {
+      for (const flowFrom of source.flow_from) {
+        statIDs.push(flowFrom.stat_energy_from);
+        if (flowFrom.stat_cost) {
+          statIDs.push(flowFrom.stat_cost);
+        }
+        const costStatId = info.cost_sensors[flowFrom.stat_energy_from];
+        if (costStatId) {
+          statIDs.push(costStatId);
+        }
       }
-      const costStatId = info.cost_sensors[flowFrom.stat_energy_from];
+    } else if (source.stat_energy_from) {
+      statIDs.push(source.stat_energy_from);
+      if (source.stat_cost) {
+        statIDs.push(source.stat_cost);
+      }
+      const costStatId = info.cost_sensors[source.stat_energy_from];
       if (costStatId) {
         statIDs.push(costStatId);
       }
     }
-    for (const flowTo of source.flow_to) {
-      statIDs.push(flowTo.stat_energy_to);
-      if (flowTo.stat_compensation) {
-        statIDs.push(flowTo.stat_compensation);
+    if (source.flow_to && source.flow_to.length) {
+      for (const flowTo of source.flow_to) {
+        statIDs.push(flowTo.stat_energy_to);
+        if (flowTo.stat_compensation) {
+          statIDs.push(flowTo.stat_compensation);
+        }
+        const costStatId = info.cost_sensors[flowTo.stat_energy_to];
+        if (costStatId) {
+          statIDs.push(costStatId);
+        }
       }
-      const costStatId = info.cost_sensors[flowTo.stat_energy_to];
+    } else if (source.stat_energy_to) {
+      statIDs.push(source.stat_energy_to);
+      if (source.stat_compensation) {
+        statIDs.push(source.stat_compensation);
+      }
+      const costStatId = info.cost_sensors[source.stat_energy_to];
       if (costStatId) {
         statIDs.push(costStatId);
       }
@@ -352,8 +385,12 @@ const getEnergyData = async (hass: HomeAssistant, prefs: EnergyPreferences, star
   for (const source of prefs.energy_sources) {
     // grid source
     if (source.type === 'grid') {
-      for (const flowFrom of source.flow_from) {
-        consumptionStatIDs.push(flowFrom.stat_energy_from);
+      if (source.flow_from && source.flow_from.length) {
+        for (const flowFrom of source.flow_from) {
+          consumptionStatIDs.push(flowFrom.stat_energy_from);
+        }
+      } else if (source.stat_energy_from) {
+        consumptionStatIDs.push(source.stat_energy_from);
       }
     }
   }
