@@ -27,6 +27,7 @@ jobs:
 
   quality:
     name: Lint, Test, and Build
+    if: ${{ github.event.action != 'edited' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
