@@ -3,6 +3,5 @@
     "content_in_root": false,
     "filename": "energy-period-selector-plus.js",
     "render_readme": true,
-    "domains": ["lovelace"],
     "homeassistant": "2023.1.0"
 }
