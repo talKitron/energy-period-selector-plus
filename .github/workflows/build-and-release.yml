@@ -3,10 +3,15 @@ name: Build and Release
 on:
   push:
     tags:
-      - 'v*'
-  release:
-    types: [published]
+      - "v*"
   workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
   build:
@@ -71,10 +76,6 @@ jobs:
           name: dist-files
           path: dist/
           
-      - name: Get version from tag
-        id: get_version
-        run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
-        
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
@@ -83,57 +84,5 @@ jobs:
           generate_release_notes: true
           draft: false
           prerelease: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Commit built files to repository
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git fetch origin main
-          git checkout main
-          git add -f dist/
-          git diff --staged --quiet || git commit -m "chore: update built files for HACS integration [skip ci]"
-          git push origin main
-
-  attach-to-release:
-    name: Attach Files to Release
-    runs-on: ubuntu-latest
-    if: github.event_name == 'release'
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-          
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: latest
-          
-      - name: Cache dependencies
-        uses: actions/cache@v4
-        with:
-          path: ~/.pnpm-store
-          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-
-            
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-        
-      - name: Build project
-        run: pnpm run build
-        
-      - name: Attach Files to Release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: |
-            dist/energy-period-selector-plus.js
-          tag_name: ${{ github.event.release.tag_name }}
-          release_id: ${{ github.event.release.id }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
