@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.2.6] - 2026-03-08
+
+### Fixed
+- Support HA 2026.3 flat grid energy source data structure
+
 ## [0.2.5] - 2024-12-19
 
 ### Changed
