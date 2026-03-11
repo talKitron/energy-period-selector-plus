@@ -41,6 +41,8 @@
       },
       "sync_entity": "Entita synchronizácie dátumu",
       "sync_direction": "Smer synchronizácie",
+      "sync_start_entity": "Entita synchronizácie dátumu začiatku",
+      "sync_end_entity": "Entita synchronizácie dátumu konca",
       "sync_direction_options": {
         "both": "Obojsmerne",
         "to_entity": "Len do entity",

@@ -467,9 +467,10 @@ export class EnergyPeriodSelectorBase extends SubscribeMixin(LitElement) {
     energyCollection.setPeriod(startDate, endDate);
     energyCollection.refresh();
 
-    // Sync to entity if configured and not skipping
+    // Syncs configured entities when date changes and sync is enabled.
     if (!skipEntitySync) {
       this._syncToEntity();
+      this._syncRangeToEntities(startDate, endDate);
     }
   }
 
@@ -618,6 +619,46 @@ export class EnergyPeriodSelectorBase extends SubscribeMixin(LitElement) {
       console.warn('Failed to sync date to entity:', error);
       // Clear user action flag even on error
       this._isUserAction = false;
+    });
+  }
+
+  private _syncRangeToEntities(startDate: Date, endDate: Date): void {
+    const syncStartEntity = this._config?.sync_start_entity;
+    const syncEndEntity = this._config?.sync_end_entity;
+
+    if (!syncStartEntity && !syncEndEntity) {
+      return;
+    }
+
+    const updates: Promise<unknown>[] = [];
+
+    if (syncStartEntity) {
+      const startEntityDate = this._formatDateForEntity(startDate);
+      if (startEntityDate) {
+        updates.push(this._setDateEntityValue(syncStartEntity, startEntityDate));
+      }
+    }
+
+    if (syncEndEntity) {
+      const endEntityDate = this._formatDateForEntity(endDate);
+      if (endEntityDate) {
+        updates.push(this._setDateEntityValue(syncEndEntity, endEntityDate));
+      }
+    }
+
+    if (!updates.length) {
+      return;
+    }
+
+    Promise.all(updates.map(update => update.catch(error => error))).catch(error => {
+      console.warn('Failed to sync range dates to entities:', error);
+    });
+  }
+
+  private _setDateEntityValue(entityId: string, entityDate: any): Promise<unknown> {
+    return this.hass.callService('input_datetime', 'set_datetime', {
+      entity_id: entityId,
+      ...entityDate
     });
   }
 

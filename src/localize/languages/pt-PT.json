@@ -41,6 +41,8 @@
             },
             "sync_entity": "Entidade de Data de Sincronização",
             "sync_direction": "Direção de Sincronização",
+            "sync_start_entity": "Entidade de Data de Início de Sincronização",
+            "sync_end_entity": "Entidade de Data de Fim de Sincronização",
             "sync_direction_options": {
                 "both": "Bidireccional",
                 "to_entity": "Apenas para Entidade",

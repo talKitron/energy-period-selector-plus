@@ -93,6 +93,8 @@ describe('EnergyPeriodSelectorBase - Arrow Button Functionality', () => {
   let mockElement: HTMLElement;
 
   beforeEach(() => {
+    jest.clearAllMocks();
+
     // Create a mock element
     mockElement = document.createElement('div');
     document.body.appendChild(mockElement);
@@ -248,6 +250,37 @@ describe('EnergyPeriodSelectorBase - Arrow Button Functionality', () => {
 
       // Restore original method
       (component as any)._setDate = originalSetDate;
+    });
+
+    it('should sync start and end dates to range entities when configured', async () => {
+      (component as any)._config = {
+        ...(component as any)._config,
+        sync_start_entity: 'input_datetime.energy_start_date',
+        sync_end_entity: 'input_datetime.energy_end_date',
+      };
+
+      (component as any)._syncRangeToEntities(
+        new Date('2026-03-11T00:00:00Z'),
+        new Date('2026-03-17T23:59:59Z')
+      );
+
+      await Promise.resolve();
+
+      expect(mockHass.callService).toHaveBeenCalledWith(
+        'input_datetime',
+        'set_datetime',
+        expect.objectContaining({
+          entity_id: 'input_datetime.energy_start_date',
+        })
+      );
+
+      expect(mockHass.callService).toHaveBeenCalledWith(
+        'input_datetime',
+        'set_datetime',
+        expect.objectContaining({
+          entity_id: 'input_datetime.energy_end_date',
+        })
+      );
     });
   });
 

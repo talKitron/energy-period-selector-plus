@@ -46,6 +46,8 @@ export class EnergyPeriodSelectorEditor extends LitElement implements LovelaceCa
           compare_button_label: optional(string()),
           sync_entity: optional(string()),
           sync_direction: optional(string()),
+          sync_start_entity: optional(string()),
+          sync_end_entity: optional(string()),
           layout_mode: optional(string()),
         })
       )
@@ -175,6 +177,8 @@ export class EnergyPeriodSelectorEditor extends LitElement implements LovelaceCa
       period_buttons: this._config.period_buttons ?? ['day', 'week', 'month', 'year'],
       sync_entity: this._config.sync_entity ?? '',
       sync_direction: this._config.sync_direction ?? 'both',
+      sync_start_entity: this._config.sync_start_entity ?? '',
+      sync_end_entity: this._config.sync_end_entity ?? '',
       layout_mode: this._config.layout_mode ?? 'standard',
     };
 
@@ -238,6 +242,28 @@ export class EnergyPeriodSelectorEditor extends LitElement implements LovelaceCa
             }}
             .value=${data.sync_direction ?? 'both'}
             @value-changed=${(e: CustomEvent) => this._patch('sync_direction', e.detail.value)}
+          ></ha-selector>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="field">
+          <div class="caption">${localize('editor.fields.sync_start_entity')}</div>
+          <ha-selector
+            .hass=${this.hass}
+            .selector=${{ entity: { domain: ['input_datetime'] } }}
+            .value=${data.sync_start_entity ?? ''}
+            @value-changed=${(e: CustomEvent) => this._patch('sync_start_entity', e.detail.value || '')}
+          ></ha-selector>
+        </div>
+
+        <div class="field">
+          <div class="caption">${localize('editor.fields.sync_end_entity')}</div>
+          <ha-selector
+            .hass=${this.hass}
+            .selector=${{ entity: { domain: ['input_datetime'] } }}
+            .value=${data.sync_end_entity ?? ''}
+            @value-changed=${(e: CustomEvent) => this._patch('sync_end_entity', e.detail.value || '')}
           ></ha-selector>
         </div>
       </div>

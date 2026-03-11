@@ -120,6 +120,8 @@ The UI Editor looks like this:
 | custom_period_label | `string` | undefined | If set, the label of the custom period button will be changed to this value. Otherwise will be synced to your HA language (If not, consider submitting a PR, adding your language to the localize function.) |
 | sync_entity | `string` | undefined | If set, the card will sync its selected date with the specified Home Assistant entity (e.g., `input_datetime.solar_chart_date`). |
 | sync_direction | `string` | `both` | Controls the sync direction. Supported values are `to-entity`, `from-entity`, and `both`. |
+| sync_start_entity | `string` | undefined | If set, the card will sync the currently selected period start date to this Home Assistant `input_datetime` entity. |
+| sync_end_entity | `string` | undefined | If set, the card will sync the currently selected period end date to this Home Assistant `input_datetime` entity. |
 
 
 ### Example Configurations
