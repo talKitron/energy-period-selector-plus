@@ -75,6 +75,16 @@ jobs:
         with:
           name: dist-files
           path: dist/
+
+      # Hyphen in tag (e.g. v0.2.8-beta.1, v0.2.8-rc.1) → prerelease.
+      - name: Determine release channel
+        id: release_channel
+        run: |
+          if [[ "${GITHUB_REF_NAME}" == *-* ]]; then
+            echo "prerelease=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "prerelease=false" >> "$GITHUB_OUTPUT"
+          fi
           
       - name: Create Draft Release
         uses: softprops/action-gh-release@v1
@@ -83,7 +93,7 @@ jobs:
             dist/energy-period-selector-plus.js
           generate_release_notes: true
           draft: true
-          prerelease: false
+          prerelease: ${{ steps.release_channel.outputs.prerelease }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
