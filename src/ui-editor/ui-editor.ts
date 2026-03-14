@@ -275,8 +275,8 @@ export class EnergyPeriodSelectorEditor extends LitElement implements LovelaceCa
       ${showSyncWarning
         ? html`
             <div class="sync-warning ${isConflict ? 'sync-warning--conflict' : ''}" role="alert">
-              <ha-icon icon="mdi:alert"></ha-icon>
-              <span>${localize('editor.sync_mutual_exclusion_warning')}</span>
+              <span class="sync-warning__icon"><ha-icon icon="mdi:alert"></ha-icon></span>
+              <span class="sync-warning__text">${localize('editor.sync_mutual_exclusion_warning')}</span>
             </div>
           `
         : nothing}
@@ -416,13 +416,21 @@ export class EnergyPeriodSelectorEditor extends LitElement implements LovelaceCa
         background: none;
         color: var(--warning-color, #f9a825);
         font-size: 0.875rem;
+        line-height: 1.2;
       }
       .sync-warning.sync-warning--conflict {
         color: var(--error-color, #f44336);
       }
-      .sync-warning ha-icon {
+      .sync-warning__icon {
+        display: inline-flex;
+        align-items: center;
         flex-shrink: 0;
+      }
+      .sync-warning__icon ha-icon {
         color: inherit;
+      }
+      .sync-warning__text {
+        line-height: 1.2;
       }
       ha-select,
       ha-entity-picker {
