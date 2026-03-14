@@ -107,8 +107,8 @@ The UI Editor looks like this:
 
 #### Card options
 
-| Name                | Type      |   Default    | Description                                                                                                                                                                  |
-|---------------------| --------- |:------------:|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Name | Type | Default | Description |
+|------|------|:--------:|--------------|
 | type                | `string`  | **required** | `custom:energy-period-selector-plus`. |
 | layout_mode         | `string`  | `standard`   | Layout mode for the card. Supported values are `standard` (default card layout) and `compact` (optimized for headers). |
 | card_background     | `boolean`  | false | If set to `true`, a card will be added to the background of the card. |
@@ -118,10 +118,12 @@ The UI Editor looks like this:
 | compare_button_type      | `string`  | undefined | If set, a button will be added to toggle the compare mode. Supported values are `icon` and `text`. |
 | period_buttons | `array` | undefined | If set, only buttons inside this array will be displayed. Supported values are `day`, `week`, `month`, `year` and `custom`. Order of your array will be applied. |
 | custom_period_label | `string` | undefined | If set, the label of the custom period button will be changed to this value. Otherwise will be synced to your HA language (If not, consider submitting a PR, adding your language to the localize function.) |
-| sync_entity | `string` | undefined | If set, the card will sync its selected date with the specified Home Assistant entity (e.g., `input_datetime.solar_chart_date`). |
-| sync_direction | `string` | `both` | Controls the sync direction. Supported values are `to-entity`, `from-entity`, and `both`. |
-| sync_start_entity | `string` | undefined | If set, the card will sync the currently selected period start date to this Home Assistant `input_datetime` entity. |
-| sync_end_entity | `string` | undefined | If set, the card will sync the currently selected period end date to this Home Assistant `input_datetime` entity. |
+| sync_entity | `string` | undefined | If set, the card will sync its selected date with the specified Home Assistant entity (e.g., `input_datetime.solar_chart_date`). Use this **or** the range options below, not both. |
+| sync_direction | `string` | `both` | Controls the sync direction for `sync_entity`. Supported values are `to-entity`, `from-entity`, and `both`. |
+| sync_start_entity | `string` | undefined | If set, the card will sync the currently selected period **start** date to this Home Assistant `input_datetime` entity. Use this (and optionally `sync_end_entity`) **or** `sync_entity`, not both. |
+| sync_end_entity | `string` | undefined | If set, the card will sync the currently selected period **end** date to this Home Assistant `input_datetime` entity. Use with `sync_start_entity` for range sync; do not use together with `sync_entity`. |
+
+**Sync options:** Use either **single-date sync** (`sync_entity` + `sync_direction`) or **range sync** (`sync_start_entity` and/or `sync_end_entity`). Configuring both at once is invalid and the card will show a configuration error until one set is cleared.
 
 
 ### Example Configurations
