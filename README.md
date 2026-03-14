@@ -52,7 +52,7 @@ The original repository provided the solid foundation that made this enhanced ve
 
 ### Installing via HACS (recommended)
 
-[![Open your Home Assistant instance and open this repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=talKitron&repository=energy-period-selector-plus&category=dashboard)
+[![Open your Home Assistant instance and open this repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=talKitron&repository=energy-period-selector-plus&category=plugin)
 
 or
 
