@@ -229,7 +229,7 @@ export class EnergyPeriodSelectorEditor extends LitElement implements LovelaceCa
       <div class="two-col">
         <div class="field">
           <div class="caption">${localize('editor.fields.sync_entity')}</div>
-          <div class="entity-field-with-clear">
+          <div class="entity-selector-with-clear">
             <ha-selector
               class="entity-selector"
               .hass=${this.hass}
@@ -241,9 +241,10 @@ export class EnergyPeriodSelectorEditor extends LitElement implements LovelaceCa
             ${syncEntity
               ? html`
                   <ha-icon-button
+                    class="selector-clear"
                     .label=${localize('editor.fields.sync_clear')}
                     .path=${mdiClose}
-                    @click=${() => this._patch('sync_entity', '')}
+                    @click=${(e: Event) => { e.stopPropagation(); this._patch('sync_entity', ''); }}
                   ></ha-icon-button>
                 `
               : nothing}
@@ -271,10 +272,19 @@ export class EnergyPeriodSelectorEditor extends LitElement implements LovelaceCa
         </div>
       </div>
 
+      ${showSyncWarning
+        ? html`
+            <div class="sync-warning ${isConflict ? 'sync-warning--conflict' : ''}" role="alert">
+              <ha-icon .path=${mdiAlert}></ha-icon>
+              <span>${localize('editor.sync_mutual_exclusion_warning')}</span>
+            </div>
+          `
+        : nothing}
+
       <div class="two-col">
         <div class="field">
           <div class="caption">${localize('editor.fields.sync_start_entity')}</div>
-          <div class="entity-field-with-clear">
+          <div class="entity-selector-with-clear">
             <ha-selector
               class="entity-selector"
               .hass=${this.hass}
@@ -286,9 +296,10 @@ export class EnergyPeriodSelectorEditor extends LitElement implements LovelaceCa
             ${syncStartEntity
               ? html`
                   <ha-icon-button
+                    class="selector-clear"
                     .label=${localize('editor.fields.sync_clear')}
                     .path=${mdiClose}
-                    @click=${() => this._patch('sync_start_entity', '')}
+                    @click=${(e: Event) => { e.stopPropagation(); this._patch('sync_start_entity', ''); }}
                   ></ha-icon-button>
                 `
               : nothing}
@@ -297,7 +308,7 @@ export class EnergyPeriodSelectorEditor extends LitElement implements LovelaceCa
 
         <div class="field">
           <div class="caption">${localize('editor.fields.sync_end_entity')}</div>
-          <div class="entity-field-with-clear">
+          <div class="entity-selector-with-clear">
             <ha-selector
               class="entity-selector"
               .hass=${this.hass}
@@ -309,24 +320,16 @@ export class EnergyPeriodSelectorEditor extends LitElement implements LovelaceCa
             ${syncEndEntity
               ? html`
                   <ha-icon-button
+                    class="selector-clear"
                     .label=${localize('editor.fields.sync_clear')}
                     .path=${mdiClose}
-                    @click=${() => this._patch('sync_end_entity', '')}
+                    @click=${(e: Event) => { e.stopPropagation(); this._patch('sync_end_entity', ''); }}
                   ></ha-icon-button>
                 `
               : nothing}
           </div>
         </div>
       </div>
-
-      ${showSyncWarning
-        ? html`
-            <div class="sync-warning ${isConflict ? 'sync-warning--conflict' : ''}" role="alert">
-              <ha-icon .path=${mdiAlert}></ha-icon>
-              <span>${localize('editor.sync_mutual_exclusion_warning')}</span>
-            </div>
-          `
-        : nothing}
     `;
   }
 
@@ -389,31 +392,37 @@ export class EnergyPeriodSelectorEditor extends LitElement implements LovelaceCa
         color: var(--secondary-text-color);
         margin: 0 0 6px 0;
       }
-      .entity-field-with-clear {
-        display: flex;
-        gap: 4px;
-        align-items: center;
+      .entity-selector-with-clear {
+        position: relative;
+        width: 100%;
       }
-      .entity-field-with-clear .entity-selector {
-        flex: 1;
-        min-width: 0;
+      .entity-selector-with-clear .entity-selector {
+        width: 100%;
+      }
+      .entity-selector-with-clear .selector-clear {
+        position: absolute;
+        right: 32px;
+        top: 50%;
+        transform: translateY(-50%);
+        --mdc-icon-button-size: 28px;
+        color: var(--secondary-text-color);
       }
       .sync-warning {
         display: flex;
         align-items: center;
         gap: 8px;
         margin-top: 12px;
-        padding: 10px 12px;
-        background: var(--warning-color, rgba(255, 152, 0, 0.2));
-        color: var(--text-primary-color, inherit);
-        border-radius: 4px;
+        padding: 0;
+        background: none;
+        color: var(--warning-color, #f9a825);
         font-size: 0.875rem;
       }
       .sync-warning.sync-warning--conflict {
-        background: var(--error-color, rgba(244, 67, 54, 0.2));
+        color: var(--error-color, #f44336);
       }
       .sync-warning ha-icon {
         flex-shrink: 0;
+        color: inherit;
       }
       ha-select,
       ha-entity-picker {
