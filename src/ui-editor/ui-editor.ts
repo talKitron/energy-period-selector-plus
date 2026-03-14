@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-use-before-define */
 
-import { mdiAlert, mdiClose } from '@mdi/js';
+import { mdiClose } from '@mdi/js';
 import { LitElement, css, html, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { fireEvent, HomeAssistant, LovelaceCardEditor } from 'custom-card-helpers';
@@ -275,7 +275,7 @@ export class EnergyPeriodSelectorEditor extends LitElement implements LovelaceCa
       ${showSyncWarning
         ? html`
             <div class="sync-warning ${isConflict ? 'sync-warning--conflict' : ''}" role="alert">
-              <ha-icon .path=${mdiAlert}></ha-icon>
+              <ha-icon icon="mdi:alert"></ha-icon>
               <span>${localize('editor.sync_mutual_exclusion_warning')}</span>
             </div>
           `
