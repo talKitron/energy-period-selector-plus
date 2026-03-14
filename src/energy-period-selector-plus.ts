@@ -36,10 +36,30 @@ export class EnergyPeriodSelectorPlus extends LitElement implements LovelaceCard
     this._config = config;
   }
 
+  /** Returns true when both single-date sync and range sync are configured (invalid). */
+  private _hasSyncConflict(config: EnergyPeriodSelectorPlusConfig): boolean {
+    const single = (config.sync_entity ?? '').trim() !== '';
+    const range = (config.sync_start_entity ?? '').trim() !== '' || (config.sync_end_entity ?? '').trim() !== '';
+    return single && range;
+  }
+
   protected render() {
     if (!this.hass || !this._config) {
       logError(localize('common.invalid_configuration') || 'Invalid configuration');
       return nothing;
+    }
+
+    if (this._hasSyncConflict(this._config)) {
+      return html`
+        <hui-error-card
+          .hass=${this.hass}
+          .config=${{
+            type: 'error',
+            error: localize('editor.sync_mutual_exclusion_warning') || 'Use either Sync Date Entity or Sync Start/End Date Entity, not both.',
+            origConfig: this._config,
+          }}
+        ></hui-error-card>
+      `;
     }
     
     const layoutMode = this._config?.layout_mode || 'standard';

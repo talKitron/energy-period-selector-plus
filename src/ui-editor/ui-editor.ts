@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-use-before-define */
 
+import { mdiClose } from '@mdi/js';
 import { LitElement, css, html, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { fireEvent, HomeAssistant, LovelaceCardEditor } from 'custom-card-helpers';
@@ -46,6 +47,8 @@ export class EnergyPeriodSelectorEditor extends LitElement implements LovelaceCa
           compare_button_label: optional(string()),
           sync_entity: optional(string()),
           sync_direction: optional(string()),
+          sync_start_entity: optional(string()),
+          sync_end_entity: optional(string()),
           layout_mode: optional(string()),
         })
       )
@@ -175,6 +178,8 @@ export class EnergyPeriodSelectorEditor extends LitElement implements LovelaceCa
       period_buttons: this._config.period_buttons ?? ['day', 'week', 'month', 'year'],
       sync_entity: this._config.sync_entity ?? '',
       sync_direction: this._config.sync_direction ?? 'both',
+      sync_start_entity: this._config.sync_start_entity ?? '',
+      sync_end_entity: this._config.sync_end_entity ?? '',
       layout_mode: this._config.layout_mode ?? 'standard',
     };
 
@@ -207,19 +212,43 @@ export class EnergyPeriodSelectorEditor extends LitElement implements LovelaceCa
 
   /**
    * Renders the sync fields manually to achieve proper two-column layout
-   * with labels above inputs, which isn't possible with ha-form schema alone
+   * with labels above inputs, which isn't possible with ha-form schema alone.
+   * Adds clear (X) buttons when a value is set; disables the other mode's
+   * inputs when one is in use; shows a warning whenever any sync input is filled.
    */
   private _renderSyncRow(data: EnergyPeriodSelectorPlusConfig) {
+    const syncEntity = (data.sync_entity ?? '').trim();
+    const syncStartEntity = (data.sync_start_entity ?? '').trim();
+    const syncEndEntity = (data.sync_end_entity ?? '').trim();
+    const hasSingleSync = syncEntity !== '';
+    const hasRangeSync = syncStartEntity !== '' || syncEndEntity !== '';
+    const showSyncWarning = hasSingleSync || hasRangeSync;
+    const isConflict = hasSingleSync && hasRangeSync;
+
     return html`
       <div class="two-col">
         <div class="field">
           <div class="caption">${localize('editor.fields.sync_entity')}</div>
-          <ha-selector
-            .hass=${this.hass}
-            .selector=${{ entity: { domain: ['input_datetime'] } }}
-            .value=${data.sync_entity ?? ''}
-            @value-changed=${(e: CustomEvent) => this._patch('sync_entity', e.detail.value || '')}
-          ></ha-selector>
+          <div class="entity-selector-with-clear">
+            <ha-selector
+              class="entity-selector"
+              .hass=${this.hass}
+              .selector=${{ entity: { domain: ['input_datetime'] } }}
+              .value=${data.sync_entity ?? ''}
+              ?disabled=${hasRangeSync}
+              @value-changed=${(e: CustomEvent) => this._patch('sync_entity', e.detail.value || '')}
+            ></ha-selector>
+            ${syncEntity
+              ? html`
+                  <ha-icon-button
+                    class="selector-clear"
+                    .label=${localize('editor.fields.sync_clear')}
+                    .path=${mdiClose}
+                    @click=${(e: Event) => { e.stopPropagation(); this._patch('sync_entity', ''); }}
+                  ></ha-icon-button>
+                `
+              : nothing}
+          </div>
         </div>
 
         <div class="field">
@@ -237,8 +266,67 @@ export class EnergyPeriodSelectorEditor extends LitElement implements LovelaceCa
               },
             }}
             .value=${data.sync_direction ?? 'both'}
+            ?disabled=${hasRangeSync}
             @value-changed=${(e: CustomEvent) => this._patch('sync_direction', e.detail.value)}
           ></ha-selector>
+        </div>
+      </div>
+
+      ${showSyncWarning
+        ? html`
+            <div class="sync-warning ${isConflict ? 'sync-warning--conflict' : ''}" role="alert">
+              ${localize('editor.sync_mutual_exclusion_warning')}
+            </div>
+          `
+        : nothing}
+
+      <div class="two-col">
+        <div class="field">
+          <div class="caption">${localize('editor.fields.sync_start_entity')}</div>
+          <div class="entity-selector-with-clear">
+            <ha-selector
+              class="entity-selector"
+              .hass=${this.hass}
+              .selector=${{ entity: { domain: ['input_datetime'] } }}
+              .value=${data.sync_start_entity ?? ''}
+              ?disabled=${hasSingleSync}
+              @value-changed=${(e: CustomEvent) => this._patch('sync_start_entity', e.detail.value || '')}
+            ></ha-selector>
+            ${syncStartEntity
+              ? html`
+                  <ha-icon-button
+                    class="selector-clear"
+                    .label=${localize('editor.fields.sync_clear')}
+                    .path=${mdiClose}
+                    @click=${(e: Event) => { e.stopPropagation(); this._patch('sync_start_entity', ''); }}
+                  ></ha-icon-button>
+                `
+              : nothing}
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="caption">${localize('editor.fields.sync_end_entity')}</div>
+          <div class="entity-selector-with-clear">
+            <ha-selector
+              class="entity-selector"
+              .hass=${this.hass}
+              .selector=${{ entity: { domain: ['input_datetime'] } }}
+              .value=${data.sync_end_entity ?? ''}
+              ?disabled=${hasSingleSync}
+              @value-changed=${(e: CustomEvent) => this._patch('sync_end_entity', e.detail.value || '')}
+            ></ha-selector>
+            ${syncEndEntity
+              ? html`
+                  <ha-icon-button
+                    class="selector-clear"
+                    .label=${localize('editor.fields.sync_clear')}
+                    .path=${mdiClose}
+                    @click=${(e: Event) => { e.stopPropagation(); this._patch('sync_end_entity', ''); }}
+                  ></ha-icon-button>
+                `
+              : nothing}
+          </div>
         </div>
       </div>
     `;
@@ -302,6 +390,31 @@ export class EnergyPeriodSelectorEditor extends LitElement implements LovelaceCa
         font-size: var(--mdc-typography-caption-font-size, 0.875rem);
         color: var(--secondary-text-color);
         margin: 0 0 6px 0;
+      }
+      .entity-selector-with-clear {
+        position: relative;
+        width: 100%;
+      }
+      .entity-selector-with-clear .entity-selector {
+        width: 100%;
+      }
+      .entity-selector-with-clear .selector-clear {
+        position: absolute;
+        right: 32px;
+        top: 50%;
+        transform: translateY(-50%);
+        --mdc-icon-button-size: 28px;
+        color: var(--secondary-text-color);
+      }
+      .sync-warning {
+        margin-top: 12px;
+        padding: 0;
+        background: none;
+        color: var(--warning-color, #f9a825);
+        font-size: 0.875rem;
+      }
+      .sync-warning.sync-warning--conflict {
+        color: var(--error-color, #f44336);
       }
       ha-select,
       ha-entity-picker {

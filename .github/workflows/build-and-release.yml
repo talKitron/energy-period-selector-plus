@@ -76,7 +76,7 @@ jobs:
           name: dist-files
           path: dist/
 
-      # Hyphen in tag (e.g. v0.2.8-beta.1, v0.2.8-rc.1) → prerelease.
+      # Hyphen in tag (e.g. v0.2.8-beta.1, v0.2.8-rc.1) => pre-release.
       - name: Determine release channel
         id: release_channel
         run: |
@@ -98,6 +98,11 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish Release
-        run: gh release edit "${{ github.ref_name }}" --draft=false
+        run: |
+          if [[ "${{ steps.release_channel.outputs.prerelease }}" == "true" ]]; then
+            gh release edit "${{ github.ref_name }}" --draft=false --prerelease
+          else
+            gh release edit "${{ github.ref_name }}" --draft=false
+          fi
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

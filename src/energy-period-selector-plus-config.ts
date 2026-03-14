@@ -11,5 +11,7 @@ export interface EnergyPeriodSelectorPlusConfig extends LovelaceCardConfig, Ener
   custom_period_label?: string;
   sync_entity?: string;
   sync_direction?: 'to-entity' | 'from-entity' | 'both';
+  sync_start_entity?: string;
+  sync_end_entity?: string;
   layout_mode?: 'standard' | 'compact';
 }

@@ -12,6 +12,7 @@
     "today": "Hoje"
   },
     "editor": {
+        "sync_mutual_exclusion_warning": "Use apenas Entidade de Data de Sincronização ou Entidades de Início/Fim de Sincronização, não ambas.",
         "yaml_disclaimer": "Por favor, utilize o modo yaml para as outras opções",
         "docs": "Documentação",
         "sections": "Secções",
@@ -40,7 +41,10 @@
                 "custom": "Personalizado"
             },
             "sync_entity": "Entidade de Data de Sincronização",
+            "sync_clear": "Limpar",
             "sync_direction": "Direção de Sincronização",
+            "sync_start_entity": "Entidade de Data de Início de Sincronização",
+            "sync_end_entity": "Entidade de Data de Fim de Sincronização",
             "sync_direction_options": {
                 "both": "Bidireccional",
                 "to_entity": "Apenas para Entidade",
