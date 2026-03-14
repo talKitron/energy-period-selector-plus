@@ -7,7 +7,8 @@ on:
     - cron: "0 0 * * *"
   workflow_dispatch:
 
-permissions: {}
+permissions:
+  contents: read
 
 concurrency:
   group: validate-${{ github.workflow }}-${{ github.ref }}
@@ -17,7 +18,19 @@ jobs:
   hacs:
     runs-on: "ubuntu-latest"
     steps:
-      - name: Validate HACS
-        uses: "hacs/action@main"
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate HACS on default branch
+        if: github.ref_name == github.event.repository.default_branch
+        uses: hacs/action@main
         with:
-          category: "plugin"
+          category: plugin
+
+      - name: Validate HACS on non-default branches
+        if: github.ref_name != github.event.repository.default_branch
+        uses: hacs/action@main
+        with:
+          category: plugin
+          # hacsjson + images wrongly validate default-branch content on non-default refs (hacs/integration#3362, #3822, #4629). To be removed when action image includes fix.
+          ignore: hacsjson images
