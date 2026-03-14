@@ -12,6 +12,7 @@
     "today": "Heute"
   },
   "editor": {
+    "sync_mutual_exclusion_warning": "Nur entweder Sync-Datums-Entität oder Sync-Start-/End-Entität verwenden, nicht beides.",
     "yaml_disclaimer": "Bitte verwenden Sie den YAML-Modus für die anderen Optionen",
     "docs": "Dokumentation",
     "sections": "Abschnitte",
@@ -40,6 +41,7 @@
         "custom": "Benutzerdefiniert"
       },
       "sync_entity": "Sync-Datums-Entität",
+      "sync_clear": "Löschen",
       "sync_direction": "Sync-Richtung",
       "sync_start_entity": "Sync-Entität Startdatum",
       "sync_end_entity": "Sync-Entität Enddatum",

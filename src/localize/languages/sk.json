@@ -12,6 +12,7 @@
     "today": "Dnes"
   },
   "editor": {
+    "sync_mutual_exclusion_warning": "Použite len entitu synchronizácie dátumu alebo entity začiatku/konca, nie obe.",
     "yaml_disclaimer": "Pre ostatné možnosti použite yaml mód",
     "docs": "Dokumentácia",
     "sections": "Sekcie",
@@ -40,6 +41,7 @@
         "custom": "Vlastné"
       },
       "sync_entity": "Entita synchronizácie dátumu",
+      "sync_clear": "Vymazať",
       "sync_direction": "Smer synchronizácie",
       "sync_start_entity": "Entita synchronizácie dátumu začiatku",
       "sync_end_entity": "Entita synchronizácie dátumu konca",

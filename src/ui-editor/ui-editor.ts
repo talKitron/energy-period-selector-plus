@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-use-before-define */
 
+import { mdiAlert, mdiClose } from '@mdi/js';
 import { LitElement, css, html, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { fireEvent, HomeAssistant, LovelaceCardEditor } from 'custom-card-helpers';
@@ -211,19 +212,42 @@ export class EnergyPeriodSelectorEditor extends LitElement implements LovelaceCa
 
   /**
    * Renders the sync fields manually to achieve proper two-column layout
-   * with labels above inputs, which isn't possible with ha-form schema alone
+   * with labels above inputs, which isn't possible with ha-form schema alone.
+   * Adds clear (X) buttons when a value is set; disables the other mode's
+   * inputs when one is in use; shows a warning whenever any sync input is filled.
    */
   private _renderSyncRow(data: EnergyPeriodSelectorPlusConfig) {
+    const syncEntity = (data.sync_entity ?? '').trim();
+    const syncStartEntity = (data.sync_start_entity ?? '').trim();
+    const syncEndEntity = (data.sync_end_entity ?? '').trim();
+    const hasSingleSync = syncEntity !== '';
+    const hasRangeSync = syncStartEntity !== '' || syncEndEntity !== '';
+    const showSyncWarning = hasSingleSync || hasRangeSync;
+    const isConflict = hasSingleSync && hasRangeSync;
+
     return html`
       <div class="two-col">
         <div class="field">
           <div class="caption">${localize('editor.fields.sync_entity')}</div>
-          <ha-selector
-            .hass=${this.hass}
-            .selector=${{ entity: { domain: ['input_datetime'] } }}
-            .value=${data.sync_entity ?? ''}
-            @value-changed=${(e: CustomEvent) => this._patch('sync_entity', e.detail.value || '')}
-          ></ha-selector>
+          <div class="entity-field-with-clear">
+            <ha-selector
+              class="entity-selector"
+              .hass=${this.hass}
+              .selector=${{ entity: { domain: ['input_datetime'] } }}
+              .value=${data.sync_entity ?? ''}
+              ?disabled=${hasRangeSync}
+              @value-changed=${(e: CustomEvent) => this._patch('sync_entity', e.detail.value || '')}
+            ></ha-selector>
+            ${syncEntity
+              ? html`
+                  <ha-icon-button
+                    .label=${localize('editor.fields.sync_clear')}
+                    .path=${mdiClose}
+                    @click=${() => this._patch('sync_entity', '')}
+                  ></ha-icon-button>
+                `
+              : nothing}
+          </div>
         </div>
 
         <div class="field">
@@ -241,6 +265,7 @@ export class EnergyPeriodSelectorEditor extends LitElement implements LovelaceCa
               },
             }}
             .value=${data.sync_direction ?? 'both'}
+            ?disabled=${hasRangeSync}
             @value-changed=${(e: CustomEvent) => this._patch('sync_direction', e.detail.value)}
           ></ha-selector>
         </div>
@@ -249,24 +274,59 @@ export class EnergyPeriodSelectorEditor extends LitElement implements LovelaceCa
       <div class="two-col">
         <div class="field">
           <div class="caption">${localize('editor.fields.sync_start_entity')}</div>
-          <ha-selector
-            .hass=${this.hass}
-            .selector=${{ entity: { domain: ['input_datetime'] } }}
-            .value=${data.sync_start_entity ?? ''}
-            @value-changed=${(e: CustomEvent) => this._patch('sync_start_entity', e.detail.value || '')}
-          ></ha-selector>
+          <div class="entity-field-with-clear">
+            <ha-selector
+              class="entity-selector"
+              .hass=${this.hass}
+              .selector=${{ entity: { domain: ['input_datetime'] } }}
+              .value=${data.sync_start_entity ?? ''}
+              ?disabled=${hasSingleSync}
+              @value-changed=${(e: CustomEvent) => this._patch('sync_start_entity', e.detail.value || '')}
+            ></ha-selector>
+            ${syncStartEntity
+              ? html`
+                  <ha-icon-button
+                    .label=${localize('editor.fields.sync_clear')}
+                    .path=${mdiClose}
+                    @click=${() => this._patch('sync_start_entity', '')}
+                  ></ha-icon-button>
+                `
+              : nothing}
+          </div>
         </div>
 
         <div class="field">
           <div class="caption">${localize('editor.fields.sync_end_entity')}</div>
-          <ha-selector
-            .hass=${this.hass}
-            .selector=${{ entity: { domain: ['input_datetime'] } }}
-            .value=${data.sync_end_entity ?? ''}
-            @value-changed=${(e: CustomEvent) => this._patch('sync_end_entity', e.detail.value || '')}
-          ></ha-selector>
+          <div class="entity-field-with-clear">
+            <ha-selector
+              class="entity-selector"
+              .hass=${this.hass}
+              .selector=${{ entity: { domain: ['input_datetime'] } }}
+              .value=${data.sync_end_entity ?? ''}
+              ?disabled=${hasSingleSync}
+              @value-changed=${(e: CustomEvent) => this._patch('sync_end_entity', e.detail.value || '')}
+            ></ha-selector>
+            ${syncEndEntity
+              ? html`
+                  <ha-icon-button
+                    .label=${localize('editor.fields.sync_clear')}
+                    .path=${mdiClose}
+                    @click=${() => this._patch('sync_end_entity', '')}
+                  ></ha-icon-button>
+                `
+              : nothing}
+          </div>
         </div>
       </div>
+
+      ${showSyncWarning
+        ? html`
+            <div class="sync-warning ${isConflict ? 'sync-warning--conflict' : ''}" role="alert">
+              <ha-icon .path=${mdiAlert}></ha-icon>
+              <span>${localize('editor.sync_mutual_exclusion_warning')}</span>
+            </div>
+          `
+        : nothing}
     `;
   }
 
@@ -328,6 +388,32 @@ export class EnergyPeriodSelectorEditor extends LitElement implements LovelaceCa
         font-size: var(--mdc-typography-caption-font-size, 0.875rem);
         color: var(--secondary-text-color);
         margin: 0 0 6px 0;
+      }
+      .entity-field-with-clear {
+        display: flex;
+        gap: 4px;
+        align-items: center;
+      }
+      .entity-field-with-clear .entity-selector {
+        flex: 1;
+        min-width: 0;
+      }
+      .sync-warning {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 12px;
+        padding: 10px 12px;
+        background: var(--warning-color, rgba(255, 152, 0, 0.2));
+        color: var(--text-primary-color, inherit);
+        border-radius: 4px;
+        font-size: 0.875rem;
+      }
+      .sync-warning.sync-warning--conflict {
+        background: var(--error-color, rgba(244, 67, 54, 0.2));
+      }
+      .sync-warning ha-icon {
+        flex-shrink: 0;
       }
       ha-select,
       ha-entity-picker {
