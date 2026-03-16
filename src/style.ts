@@ -70,6 +70,7 @@ export const stylesBase = css`
   .energy-period-selector.compact-mode .navigation-controls ha-icon-button-prev,
   .energy-period-selector.compact-mode .navigation-controls ha-icon-button-next {
     --mdc-icon-button-size: var(--epsp-nav-icon-size) !important;
+    --mdc-icon-size: var(--epsp-nav-icon-size) !important;
     height: var(--epsp-nav-icon-size) !important;
     width: var(--epsp-nav-icon-size) !important;
     min-height: var(--epsp-nav-icon-size) !important;
@@ -102,6 +103,7 @@ export const stylesBase = css`
   .energy-period-selector.compact-mode .today-icon,
   .energy-period-selector.compact-mode .compare {
     --mdc-icon-button-size: var(--epsp-nav-icon-size) !important;
+    --mdc-icon-size: var(--epsp-nav-icon-size) !important;
     height: var(--epsp-nav-icon-size) !important;
     width: var(--epsp-nav-icon-size) !important;
     min-height: var(--epsp-nav-icon-size) !important;
@@ -237,6 +239,7 @@ export const stylesBase = css`
   .navigation-controls ha-icon-button-prev,
   .navigation-controls ha-icon-button-next {
     --mdc-icon-button-size: var(--epsp-nav-icon-size) !important;
+    --mdc-icon-size: var(--epsp-nav-icon-size) !important;
     height: var(--epsp-nav-icon-size) !important;
     width: var(--epsp-nav-icon-size) !important;
     min-height: var(--epsp-nav-icon-size) !important;
@@ -262,12 +265,29 @@ export const stylesBase = css`
   .navigation-controls ha-icon-button-prev mwc-icon-button,
   .navigation-controls ha-icon-button-next mwc-icon-button {
     --mdc-icon-button-size: var(--epsp-nav-icon-size) !important;
+    --mdc-icon-size: var(--epsp-nav-icon-size) !important;
     height: var(--epsp-nav-icon-size) !important;
     width: var(--epsp-nav-icon-size) !important;
     min-height: var(--epsp-nav-icon-size) !important;
     min-width: var(--epsp-nav-icon-size) !important;
     max-height: var(--epsp-nav-icon-size) !important;
     max-width: var(--epsp-nav-icon-size) !important;
+  }
+  
+  /* Today icon button (all layout modes) - same sizing as nav chevrons so it scales with Button Font Size */
+  .navigation-controls .today-icon {
+    --mdc-icon-button-size: var(--epsp-nav-icon-size) !important;
+    --mdc-icon-size: var(--epsp-nav-icon-size) !important;
+    height: var(--epsp-nav-icon-size) !important;
+    width: var(--epsp-nav-icon-size) !important;
+    min-height: var(--epsp-nav-icon-size) !important;
+    min-width: var(--epsp-nav-icon-size) !important;
+    max-height: var(--epsp-nav-icon-size) !important;
+    max-width: var(--epsp-nav-icon-size) !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    line-height: var(--epsp-nav-icon-size) !important;
   }
   
   /* Custom HTML button group - full control */
@@ -541,128 +561,29 @@ export const stylesBase = css`
   
   /* Responsive design for mobile devices */
   @media (max-width: 768px) {
-    .energy-period-selector {
-      gap: 0.5rem;
-    }
     .period-buttons-row {
       justify-content: flex-end;
-      gap: 0.25rem;
     }
     .period-buttons-custom {
       flex-wrap: wrap;
       justify-content: flex-end;
       max-width: 100%;
     }
-    .period-button-custom {
-      flex: 0 0 auto;
-      min-width: 50px;
-      padding: 3px 8px;
-      font-size: 11px;
-      height: 20px;
-    }
-    .period-button-custom.active {
-      background-color: var(--primary-color, #03a9f4) !important;
-      color: var(--text-primary-on-color, #ffffff) !important;
-      border-color: var(--primary-color, #03a9f4) !important;
-    }
     .date-controls-row {
       flex-direction: row;
       justify-content: flex-end;
-      gap: 0.5rem;
     }
     .date-display {
-      font-size: 14px;
       text-align: right;
       flex: 1;
     }
-    .today-button-custom,
-    .today-button-fallback {
-      min-width: 40px;
-      height: 20px;
-      padding: 3px 8px;
-      font-size: 11px;
-    }
-    .compare-button-custom {
-      min-width: 40px;
-      height: 20px;
-      padding: 3px 8px;
-      font-size: 11px;
-    }
-    .navigation-controls ha-button {
-      --mdc-button-height: 20px;
-      --mdc-button-min-width: 40px;
-      font-size: 11px;
-      padding: 3px 8px;
-    }
-    
   }
   
   @media (max-width: 480px) {
-    .period-button-custom {
-      min-width: 40px;
-      padding: 2px 6px;
-      font-size: 10px;
-      height: 18px;
-    }
-    .date-display {
-      font-size: 12px;
-    }
-    .today-button-custom,
-    .today-button-fallback {
-      min-width: 35px;
-      height: 18px;
-      padding: 2px 6px;
-      font-size: 10px;
-    }
-    .compare-button-custom {
-      min-width: 35px;
-      height: 18px;
-      padding: 2px 6px;
-      font-size: 10px;
-    }
-    .navigation-controls ha-button {
-      --mdc-button-height: 18px;
-      --mdc-button-min-width: 35px;
-      font-size: 10px;
-      padding: 2px 6px;
-    }
-    
-    /* Ultra-compact mode for very narrow spaces */
-    .energy-period-selector.compact-mode .period-button-custom {
-      min-width: 30px;
-      padding: 1px 4px;
-      font-size: 9px;
-      height: 16px;
-    }
-    
-    .energy-period-selector.compact-mode .today-button-custom {
-      min-width: 30px;
-      height: 16px;
-      padding: 1px 4px;
-      font-size: 9px;
-    }
-    
-    .energy-period-selector.compact-mode .compare-button-custom {
-      min-width: 30px;
-      height: 16px;
-      padding: 1px 4px;
-      font-size: 9px;
-    }
-    
-    .energy-period-selector.compact-mode .navigation-controls ha-icon-button,
-    .energy-period-selector.compact-mode .navigation-controls ha-icon-button-prev,
-    .energy-period-selector.compact-mode .navigation-controls ha-icon-button-next {
-      --mdc-icon-button-size: 20px !important;
-      height: 20px !important;
-      width: 20px !important;
-      min-height: 20px !important;
-      min-width: 20px !important;
-      max-height: 20px !important;
-      max-width: 20px !important;
-    }
-    
-    .energy-period-selector.compact-mode .date-display {
-      font-size: 10px;
+    .period-buttons-custom {
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      max-width: 100%;
     }
   }
   
@@ -695,6 +616,7 @@ export const stylesBase = css`
     max-height: var(--epsp-nav-icon-size) !important;
     max-width: var(--epsp-nav-icon-size) !important;
     --mdc-icon-button-size: var(--epsp-nav-icon-size) !important;
+    --mdc-icon-size: var(--epsp-nav-icon-size) !important;
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;

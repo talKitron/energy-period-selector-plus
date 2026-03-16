@@ -26,4 +26,6 @@ export interface EnergyPeriodSelectorPlusConfig extends LovelaceCardConfig, Ener
   button_min_width?: number;
   /** Optional pixel override for gap between elements. Takes precedence over preset. */
   gap?: number;
+  /** Optional pixel override for nav icon button size (prev/next chevrons, Today/Compare icons). Takes precedence over preset. */
+  icon_button_size?: number;
 }

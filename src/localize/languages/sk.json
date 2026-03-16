@@ -72,6 +72,7 @@
       "date_font_size": "Veľkosť písma dátumu (px)",
       "button_min_width": "Min. šírka tlačidla (px)",
       "gap": "Medzera (px)",
+      "icon_button_size": "Veľkosť tlačidla s ikonou (px)",
       "button_type_options": {
         "none": "Žiadne"
       }

@@ -306,7 +306,13 @@ export class EnergyPeriodSelectorBase extends SubscribeMixin(LitElement) {
     };
     const overrides: string[] = [];
     const bfs = toPx(this._config?.button_font_size);
-    if (bfs != null) overrides.push(`--epsp-button-font-size: ${bfs}px`);
+    if (bfs != null) {
+      overrides.push(`--epsp-button-font-size: ${bfs}px`);
+      const derivedHeight = Math.round(bfs + 8);
+      overrides.push(`--epsp-control-height: ${derivedHeight}px`);
+    }
+    const ibs = toPx(this._config?.icon_button_size);
+    if (ibs != null) overrides.push(`--epsp-nav-icon-size: ${ibs}px`);
     const dfs = toPx(this._config?.date_font_size);
     if (dfs != null) overrides.push(`--epsp-date-font-size: ${dfs}px`);
     const bmw = toPx(this._config?.button_min_width);

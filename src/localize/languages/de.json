@@ -72,6 +72,7 @@
       "date_font_size": "Datums-Schriftgröße (px)",
       "button_min_width": "Button-Mindestbreite (px)",
       "gap": "Abstand (px)",
+      "icon_button_size": "Symbol-Schaltflächengröße (px)",
       "button_type_options": {
         "none": "Keine"
       }

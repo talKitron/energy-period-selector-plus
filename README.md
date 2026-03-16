@@ -132,6 +132,7 @@ The UI Editor looks like this:
 | date_font_size     | `number` | Date display font size in pixels (e.g. `18`). |
 | button_min_width   | `number` | Minimum button width in pixels (e.g. `56`). |
 | gap                | `number` | Gap between elements in pixels (e.g. `10`). |
+| icon_button_size   | `number` | Icon button size in pixels (e.g. `26`). |
 
 
 ### Example Configurations
@@ -270,6 +271,7 @@ button_font_size: 13
 date_font_size: 18
 button_min_width: 56
 gap: 10
+icon_button_size: 26   # optional; prev/next and Today/Compare icon size
 ```
 
 <hr/>

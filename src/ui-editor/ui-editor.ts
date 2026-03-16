@@ -53,6 +53,7 @@ export class EnergyPeriodSelectorEditor extends LitElement implements LovelaceCa
           density: optional(string()),
           button_group_width: optional(string()),
           button_font_size: optional(any()),
+          icon_button_size: optional(any()),
           date_font_size: optional(any()),
           button_min_width: optional(any()),
           gap: optional(any()),
@@ -118,6 +119,11 @@ export class EnergyPeriodSelectorEditor extends LitElement implements LovelaceCa
           schema: [
             {
               name: 'button_font_size',
+              required: true,
+              selector: { number: { min: 1, mode: 'box' } },
+            },
+            {
+              name: 'icon_button_size',
               required: true,
               selector: { number: { min: 1, mode: 'box' } },
             },
@@ -233,6 +239,7 @@ export class EnergyPeriodSelectorEditor extends LitElement implements LovelaceCa
       density: this._config.density ?? 'normal',
       button_group_width: this._config.button_group_width ?? 'auto',
       button_font_size: this._config.button_font_size ?? undefined,
+      icon_button_size: this._config.icon_button_size ?? undefined,
       date_font_size: this._config.date_font_size ?? undefined,
       button_min_width: this._config.button_min_width ?? undefined,
       gap: this._config.gap ?? undefined,
@@ -434,6 +441,7 @@ export class EnergyPeriodSelectorEditor extends LitElement implements LovelaceCa
       ...this._config,
       layout_mode: newLayout,
       button_font_size: base.button_font_size,
+      icon_button_size: base.icon_button_size,
       date_font_size: base.date_font_size,
       button_min_width: base.button_min_width,
       gap: base.gap,
@@ -444,12 +452,12 @@ export class EnergyPeriodSelectorEditor extends LitElement implements LovelaceCa
 
   private _getLayoutDefaults(layoutMode: string) {
     if (layoutMode === 'compact') {
-      return { button_font_size: 10, date_font_size: 12, button_min_width: 35, gap: 4 };
+      return { button_font_size: 10, icon_button_size: 20, date_font_size: 12, button_min_width: 35, gap: 4 };
     }
     if (layoutMode === 'wide') {
-      return { button_font_size: 13, date_font_size: 18, button_min_width: 56, gap: 12 };
+      return { button_font_size: 13, icon_button_size: 26, date_font_size: 18, button_min_width: 56, gap: 12 };
     }
-    return { button_font_size: 11, date_font_size: 16, button_min_width: 40, gap: 8 };
+    return { button_font_size: 11, icon_button_size: 20, date_font_size: 16, button_min_width: 40, gap: 8 };
   }
 
   private _resetAdvancedAppearance(): void {
@@ -459,6 +467,7 @@ export class EnergyPeriodSelectorEditor extends LitElement implements LovelaceCa
     const config: EnergyPeriodSelectorPlusConfig = {
       ...this._config,
       button_font_size: base.button_font_size,
+      icon_button_size: base.icon_button_size,
       date_font_size: base.date_font_size,
       button_min_width: base.button_min_width,
       gap: base.gap,

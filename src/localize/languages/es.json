@@ -72,6 +72,7 @@
             "date_font_size": "Tamaño de fuente de fecha (px)",
             "button_min_width": "Ancho mínimo de botón (px)",
             "gap": "Espacio (px)",
+            "icon_button_size": "Tamaño del botón de icono (px)",
             "button_type_options": {
                 "none": "Ninguno"
             }
