@@ -212,9 +212,12 @@ export class EnergyPeriodSelectorBase extends SubscribeMixin(LitElement) {
     </ha-icon-button>`;
 
 
+    const todayType = this._config?.today_button_type;
+    const disableToday =
+      todayType === false || todayType === 'none';
+
     const todayButton =
-      this._config?.today_button_type === false ? nothing : this._config?.today_button_type === 'icon' ? todayButtonIcon : 
-      todayButtonText; // Use custom HTML button for full control
+      disableToday ? nothing : todayType === 'icon' ? todayButtonIcon : todayButtonText; // Use custom HTML button for full control
 
     // Renders compare button based on compare_button_type configuration
     const compareButtonIcon = this._config?.compare_button_type === 'icon' ? html`
@@ -276,15 +279,46 @@ export class EnergyPeriodSelectorBase extends SubscribeMixin(LitElement) {
     `;
 
     // Renders main content based on layout mode
+    const layoutClass =
+      layoutMode === 'compact'
+        ? 'compact-mode'
+        : layoutMode === 'wide'
+        ? 'wide-mode'
+        : 'standard-mode';
+    const density = this._config?.density || 'normal';
+    const densityClass =
+      density === 'compact' ? 'density-compact' : density === 'comfortable' ? 'density-comfortable' : '';
+    const buttonGroupWidth = this._config?.button_group_width || 'auto';
+    const buttonGroupFullClass = buttonGroupWidth === 'full' ? 'button-group-full' : '';
     const cssClasses = [
       'energy-period-selector',
-      layoutMode === 'compact' ? 'compact-mode' : 'standard-mode'
-    ].filter(Boolean).join(' ');
+      layoutClass,
+      densityClass,
+      buttonGroupFullClass,
+    ]
+      .filter(Boolean)
+      .join(' ');
+
+    // Builds optional inline style overrides from numeric config (takes precedence over presets).
+    const toPx = (v: unknown): number | undefined => {
+      const n = typeof v === 'number' ? v : Number(v);
+      return Number.isNaN(n) ? undefined : n;
+    };
+    const overrides: string[] = [];
+    const bfs = toPx(this._config?.button_font_size);
+    if (bfs != null) overrides.push(`--epsp-button-font-size: ${bfs}px`);
+    const dfs = toPx(this._config?.date_font_size);
+    if (dfs != null) overrides.push(`--epsp-date-font-size: ${dfs}px`);
+    const bmw = toPx(this._config?.button_min_width);
+    if (bmw != null) overrides.push(`--epsp-button-min-width: ${bmw}px`);
+    const gap = toPx(this._config?.gap);
+    if (gap != null) overrides.push(`--epsp-gap: ${gap}px`);
+    const overrideStyle = overrides.length > 0 ? overrides.join('; ') : undefined;
 
     // Default layout: button group above (period buttons on top, date controls below)
     // Both sections are right-aligned
     return html`
-      <div class="${cssClasses}">
+      <div class="${cssClasses}" style="${overrideStyle ?? ''}">
         ${compareButtonText}
         ${periodButtonsSection}
         ${dateControlsSection}

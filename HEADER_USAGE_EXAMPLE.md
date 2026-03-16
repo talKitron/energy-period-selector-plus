@@ -7,9 +7,10 @@ The Energy Period Selector Plus card now supports optimized layouts for header u
 ## New Configuration Options
 
 ### Layout Modes
-- `layout_mode`: `'standard'` | `'compact'`
+- `layout_mode`: `'standard'` | `'compact'` | `'wide'`
   - `'standard'`: Default mode for normal card usage
   - `'compact'`: Compact mode optimized for header integration and limited space
+  - `'wide'`: Roomier option for wider cards
 
 ## Header Configuration Examples
 

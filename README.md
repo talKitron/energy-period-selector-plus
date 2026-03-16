@@ -27,7 +27,7 @@ The original repository provided the solid foundation that made this enhanced ve
 ## 🚀 What's New & Fixed
 
 ### New Features
-- **Layout Modes** - Choose between `standard` and `compact` layouts
+- **Layout Modes** - Choose between `standard`, `compact`, and `wide` layouts
 - **Header Integration** - Optimized `compact` mode perfect for header usage
 - **Enhanced UI Editor** - Added layout mode selection to the configuration interface
 - **Improved Responsiveness** - Better behaviour on different screen sizes
@@ -107,22 +107,31 @@ The UI Editor looks like this:
 #### Card options
 
 | Name | Type | Default | Description |
-|------|------|:--------:|--------------|
-| type                | `string`  | **required** | `custom:energy-period-selector-plus`. |
-| layout_mode         | `string`  | `standard`   | Layout mode for the card. Supported values are `standard` (default card layout) and `compact` (optimized for headers). |
-| card_background     | `boolean`  | false | If set to `true`, a card will be added to the background of the card. |
-| title | `string` | undefined | If set, a title will be added to the card. |
-| today_button_type        | `boolean`  | true | If set to `true`, a button will be added to select today. |
-| prev_next_buttons   | `boolean`  | true | If set to `true`, buttons will be added to control the previous and next period. |
-| compare_button_type      | `string`  | undefined | If set, a button will be added to toggle the compare mode. Supported values are `icon` and `text`. |
-| period_buttons | `array` | undefined | If set, only buttons inside this array will be displayed. Supported values are `day`, `week`, `month`, `year` and `custom`. Order of your array will be applied. |
-| custom_period_label | `string` | undefined | If set, the label of the custom period button will be changed to this value. Otherwise will be synced to your HA language (If not, consider submitting a PR, adding your language to the localize function.) |
-| sync_entity | `string` | undefined | If set, the card will sync its selected date with the specified Home Assistant entity (e.g., `input_datetime.solar_chart_date`). Use this **or** the range options below, not both. |
-| sync_direction | `string` | `both` | Controls the sync direction for `sync_entity`. Supported values are `to-entity`, `from-entity`, and `both`. |
-| sync_start_entity | `string` | undefined | If set, the card will sync the currently selected period **start** date to this Home Assistant `input_datetime` entity. Use this (and optionally `sync_end_entity`) **or** `sync_entity`, not both. |
-| sync_end_entity | `string` | undefined | If set, the card will sync the currently selected period **end** date to this Home Assistant `input_datetime` entity. Use with `sync_start_entity` for range sync; do not use together with `sync_entity`. |
+|------|------|:--------:|------------|
+| type           | `string`  | **required** | Always `custom:energy-period-selector-plus`. |
+| layout_mode    | `string`  | `standard`   | Layout preset: `standard`, `compact`, or `wide`. |
+| card_background| `boolean` | false        | Show a card background behind the controls. |
+| title          | `string`  | undefined    | Optional title shown above the controls. |
+| today_button_type | `string` | `text`    | Today button style: `none`, `icon`, or `text`. |
+| prev_next_buttons | `boolean` | true     | Show previous/next period arrow buttons. |
+| compare_button_type | `string` | `none`  | Compare button style: `none`, `icon`, or `text`. |
+| period_buttons | `array`   | undefined    | Limit which period buttons show (e.g. `[day, week, month]`). |
+| custom_period_label | `string` | undefined | Custom label for the `custom` period button. |
+| sync_entity   | `string`  | undefined    | Single date sync target (e.g. `input_datetime.solar_chart_date`). |
+| sync_direction| `string`  | `both`       | Direction for `sync_entity`: `to-entity`, `from-entity`, or `both`. |
+| sync_start_entity | `string` | undefined | Start date entity for range sync. |
+| sync_end_entity   | `string` | undefined | End date entity for range sync. |
 
-**Sync options:** Use either **single-date sync** (`sync_entity` + `sync_direction`) or **range sync** (`sync_start_entity` and/or `sync_end_entity`). Configuring both at once is invalid and the card will show a configuration error until one set is cleared.
+**Sync options:** Use either **single-date sync** (`sync_entity` + `sync_direction`) or **range sync** (`sync_start_entity` / `sync_end_entity`). Do not configure both at the same time.
+
+**Advanced appearance (optional):** You can fine-tune sizing with numeric overrides. These take precedence over layout and density presets. All are optional; leave empty to use preset values.
+
+| Name | Type | Description |
+|------|------|-------------|
+| button_font_size   | `number` | Button font size in pixels (e.g. `13`). |
+| date_font_size     | `number` | Date display font size in pixels (e.g. `18`). |
+| button_min_width   | `number` | Minimum button width in pixels (e.g. `56`). |
+| gap                | `number` | Gap between elements in pixels (e.g. `10`). |
 
 
 ### Example Configurations
@@ -237,6 +246,30 @@ card_background: false
 period_buttons: [day, week, month, year]
 compare_button_type: icon
 sync_entity: input_datetime.solar_chart_date
+```
+
+<hr/>
+
+**Wide layout (wider dashboards):**
+
+```yaml
+type: custom:energy-period-selector-plus
+layout_mode: wide
+card_background: true
+period_buttons: [day, week, month, year]
+```
+
+<hr/>
+
+**Advanced appearance overrides (optional):**
+
+```yaml
+type: custom:energy-period-selector-plus
+layout_mode: wide
+button_font_size: 13
+date_font_size: 18
+button_min_width: 56
+gap: 10
 ```
 
 <hr/>

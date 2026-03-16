@@ -52,8 +52,28 @@
       },
       "layout_mode": "Layout Mode",
       "layout_mode_options": {
-        "standard": "Standard (Default)",
-        "compact": "Compact"
+        "standard": "Standard",
+        "compact": "Compact",
+        "wide": "Wide"
+      },
+      "density": "Density",
+      "density_options": {
+        "normal": "Normal",
+        "compact": "Compact",
+        "comfortable": "Comfortable"
+      },
+      "button_group_width": "Button Group Width",
+      "button_group_width_options": {
+        "auto": "Auto",
+        "full": "Full"
+      },
+      "advanced_appearance_section": "Advanced appearance",
+      "button_font_size": "Button Font Size (px)",
+      "date_font_size": "Date Font Size (px)",
+      "button_min_width": "Button Min Width (px)",
+      "gap": "Gap (px)",
+      "button_type_options": {
+        "none": "None"
       }
     },
     "entity_types": {

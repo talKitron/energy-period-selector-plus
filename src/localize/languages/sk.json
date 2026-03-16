@@ -53,7 +53,27 @@
       "layout_mode": "Režim rozloženia",
       "layout_mode_options": {
         "standard": "Štandardné (Predvolené)",
-        "compact": "Kompaktné"
+        "compact": "Kompaktné",
+        "wide": "Široké"
+      },
+      "density": "Hustota",
+      "density_options": {
+        "normal": "Normálna",
+        "compact": "Kompaktná",
+        "comfortable": "Pohodlná"
+      },
+      "button_group_width": "Šírka skupiny tlačidiel",
+      "button_group_width_options": {
+        "auto": "Auto",
+        "full": "Plná"
+      },
+      "advanced_appearance_section": "Rozšírený vzhľad",
+      "button_font_size": "Veľkosť písma tlačidla (px)",
+      "date_font_size": "Veľkosť písma dátumu (px)",
+      "button_min_width": "Min. šírka tlačidla (px)",
+      "gap": "Medzera (px)",
+      "button_type_options": {
+        "none": "Žiadne"
       }
     },
     "entity_types": {

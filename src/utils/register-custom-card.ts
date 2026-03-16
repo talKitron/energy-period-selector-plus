@@ -12,6 +12,6 @@ export function registerCustomCard(params: RegisterCardParams) {
     windowWithCards.customCards.push({
         ...params,
         preview: true,
-        documentationURL: `https://github.com/flixlix/energy-period-selector-plus`,
+        documentationURL: `https://github.com/talKitron/energy-period-selector-plus`,
     });
 }

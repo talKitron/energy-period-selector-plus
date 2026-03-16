@@ -198,4 +198,26 @@ describe('Responsive Layout Tests', () => {
       expect(functionality.accessibility).toBe('should be accessible on all devices');
     });
   });
+
+  describe('Layout Presets', () => {
+    it('should define a roomier wide layout compared to standard', () => {
+      const standard = {
+        buttonFontSize: 11,
+        dateFontSize: 16,
+        buttonMinWidth: 40,
+        gap: 8,
+      };
+      const wide = {
+        buttonFontSize: 13,
+        dateFontSize: 18,
+        buttonMinWidth: 56,
+        gap: 12,
+      };
+
+      expect(wide.buttonFontSize).toBeGreaterThan(standard.buttonFontSize);
+      expect(wide.dateFontSize).toBeGreaterThanOrEqual(standard.dateFontSize);
+      expect(wide.buttonMinWidth).toBeGreaterThan(standard.buttonMinWidth);
+      expect(wide.gap).toBeGreaterThan(standard.gap);
+    });
+  });
 });

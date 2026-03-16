@@ -53,7 +53,27 @@
             "layout_mode": "Modo de Layout",
             "layout_mode_options": {
                 "standard": "Padrão (Padrão)",
-                "compact": "Compacto"
+                "compact": "Compacto",
+                "wide": "Largo"
+            },
+            "density": "Densidade",
+            "density_options": {
+                "normal": "Normal",
+                "compact": "Compacto",
+                "comfortable": "Confortável"
+            },
+            "button_group_width": "Largura do grupo de botões",
+            "button_group_width_options": {
+                "auto": "Auto",
+                "full": "Completo"
+            },
+            "advanced_appearance_section": "Aparência avançada",
+            "button_font_size": "Tamanho da fonte do botão (px)",
+            "date_font_size": "Tamanho da fonte da data (px)",
+            "button_min_width": "Largura mínima do botão (px)",
+            "gap": "Espaçamento (px)",
+            "button_type_options": {
+                "none": "Nenhum"
             }
         },
         "entity_types": {

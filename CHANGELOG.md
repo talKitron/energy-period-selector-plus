@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.2.9] - 2026-03-16
+
+- Add new `layout_mode: wide` preset for wider cards.
+- Add optional customizable options (`button_font_size`, `date_font_size`, `button_min_width`, `gap`).
+- Improve editor behavior for Today/Compare button types and advanced appearance inputs.
+
+## [0.2.8] - 2026-03-14
+
+- Add range entity sync support (`sync_start_entity` / `sync_end_entity`).
+- Improve installation instructions.
+- Automatically detect prerelease tags in the release workflow.
+
+## [0.2.7] - 2026-03-10
+
+- Fix GitHub release flow to support immutable releases.
+
 ## [0.2.6] - 2026-03-08
 
 ### Fixed

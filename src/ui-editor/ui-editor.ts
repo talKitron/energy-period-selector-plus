@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-use-before-define */
 
-import { mdiClose } from '@mdi/js';
+import { mdiClose, mdiReload } from '@mdi/js';
 import { LitElement, css, html, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { fireEvent, HomeAssistant, LovelaceCardEditor } from 'custom-card-helpers';
@@ -50,6 +50,12 @@ export class EnergyPeriodSelectorEditor extends LitElement implements LovelaceCa
           sync_start_entity: optional(string()),
           sync_end_entity: optional(string()),
           layout_mode: optional(string()),
+          density: optional(string()),
+          button_group_width: optional(string()),
+          button_font_size: optional(any()),
+          date_font_size: optional(any()),
+          button_min_width: optional(any()),
+          gap: optional(any()),
         })
       )
     );
@@ -80,12 +86,27 @@ export class EnergyPeriodSelectorEditor extends LitElement implements LovelaceCa
           ],
         },
         {
-          name: 'layout_mode',
+          name: 'density',
+          required: true,
           selector: {
             select: {
               options: [
-                { value: 'standard', label: localize('editor.fields.layout_mode_options.standard') },
-                { value: 'compact', label: localize('editor.fields.layout_mode_options.compact') },
+                { value: 'normal', label: localize('editor.fields.density_options.normal') },
+                { value: 'compact', label: localize('editor.fields.density_options.compact') },
+                { value: 'comfortable', label: localize('editor.fields.density_options.comfortable') },
+              ],
+              mode: 'dropdown',
+            },
+          },
+        },
+        {
+          name: 'button_group_width',
+          required: true,
+          selector: {
+            select: {
+              options: [
+                { value: 'auto', label: localize('editor.fields.button_group_width_options.auto') },
+                { value: 'full', label: localize('editor.fields.button_group_width_options.full') },
               ],
               mode: 'dropdown',
             },
@@ -96,11 +117,38 @@ export class EnergyPeriodSelectorEditor extends LitElement implements LovelaceCa
           name: '',
           schema: [
             {
+              name: 'button_font_size',
+              required: true,
+              selector: { number: { min: 1, mode: 'box' } },
+            },
+            {
+              name: 'date_font_size',
+              required: true,
+              selector: { number: { min: 1, mode: 'box' } },
+            },
+            {
+              name: 'button_min_width',
+              required: true,
+              selector: { number: { min: 1, mode: 'box' } },
+            },
+            {
+              name: 'gap',
+              required: true,
+              selector: { number: { min: 0, mode: 'box' } },
+            },
+          ],
+        },
+        {
+          type: 'grid',
+          name: '',
+          schema: [
+            {
               name: 'compare_button_type',
+              required: true,
               selector: {
                 select: {
                   options: [
-                    { value: '', label: '' },
+                    { value: 'none', label: localize('editor.fields.button_type_options.none') },
                     { value: 'icon', label: localize('editor.fields.compare_button_options.icon') },
                     { value: 'text', label: localize('editor.fields.compare_button_options.text') },
                   ],
@@ -120,10 +168,11 @@ export class EnergyPeriodSelectorEditor extends LitElement implements LovelaceCa
         },
         {
           name: 'today_button_type',
+          required: true,
           selector: {
             select: {
               options: [
-                { value: false, label: '' },
+                { value: 'none', label: localize('editor.fields.button_type_options.none') },
                 { value: 'icon', label: localize('editor.fields.compare_button_options.icon') },
                 { value: 'text', label: localize('editor.fields.compare_button_options.text') },
               ],
@@ -181,28 +230,74 @@ export class EnergyPeriodSelectorEditor extends LitElement implements LovelaceCa
       sync_start_entity: this._config.sync_start_entity ?? '',
       sync_end_entity: this._config.sync_end_entity ?? '',
       layout_mode: this._config.layout_mode ?? 'standard',
+      density: this._config.density ?? 'normal',
+      button_group_width: this._config.button_group_width ?? 'auto',
+      button_font_size: this._config.button_font_size ?? undefined,
+      date_font_size: this._config.date_font_size ?? undefined,
+      button_min_width: this._config.button_min_width ?? undefined,
+      gap: this._config.gap ?? undefined,
     };
 
-    const schema = this._schema(
+    const fullSchema = this._schema(
       data.compare_button_type === 'text',
       (data.period_buttons ?? []).includes('custom')
     );
 
+    const [topSchema, ...restSchema] = fullSchema;
+
     return html`
+      <!-- Top switches: card_background + prev_next_buttons -->
       <ha-form
         .hass=${this.hass}
         .data=${data}
-        .schema=${schema}
+        .schema=${[topSchema]}
         .computeLabel=${this._computeLabelCallback}
         @value-changed=${this._valueChanged}
       ></ha-form>
 
-      ${this._renderSyncRow(data)}
+      <!-- Layout preset selector + reload, directly under top switches -->
+      <div class="layout-row">
+        <ha-selector
+          .hass=${this.hass}
+          .selector=${{
+            select: {
+              options: [
+                { value: 'standard', label: localize('editor.fields.layout_mode_options.standard') },
+                { value: 'compact', label: localize('editor.fields.layout_mode_options.compact') },
+                { value: 'wide', label: localize('editor.fields.layout_mode_options.wide') },
+              ],
+              mode: 'dropdown',
+            },
+          }}
+          .label=${localize('editor.fields.layout_mode') || 'Layout Mode'}
+          .value=${this._config?.layout_mode ?? 'standard'}
+          @value-changed=${(e: CustomEvent) => this._onLayoutModeChanged(e.detail.value)}
+        ></ha-selector>
+        <ha-icon-button
+          class="layout-reset-button"
+          .label=${'Reload Layout Mode'}
+          .path=${mdiReload}
+          @click=${this._resetAdvancedAppearance}
+        ></ha-icon-button>
+      </div>
+
+      <!-- Rest of the config fields -->
+      <ha-form
+        .hass=${this.hass}
+        .data=${data}
+        .schema=${restSchema}
+        .computeLabel=${this._computeLabelCallback}
+        @value-changed=${this._valueChanged}
+      ></ha-form>
+
+      <div class="sync-container">
+        ${this._renderSyncRow(data)}
+      </div>
     `;
   }
 
   private _valueChanged(ev: CustomEvent): void {
-    const config = ev?.detail.value;
+    const config = ev?.detail.value as EnergyPeriodSelectorPlusConfig;
     fireEvent(this, 'config-changed', { config });
   }
 
@@ -266,7 +361,7 @@ export class EnergyPeriodSelectorEditor extends LitElement implements LovelaceCa
               },
             }}
             .value=${data.sync_direction ?? 'both'}
-            ?disabled=${hasRangeSync}
+            ?disabled=${hasRangeSync || !hasSingleSync}
             @value-changed=${(e: CustomEvent) => this._patch('sync_direction', e.detail.value)}
           ></ha-selector>
         </div>
@@ -330,6 +425,45 @@ export class EnergyPeriodSelectorEditor extends LitElement implements LovelaceCa
         </div>
       </div>
     `;
+  }
+
+  private _onLayoutModeChanged(newLayout: 'standard' | 'compact' | 'wide'): void {
+    if (!this._config) return;
+    const base = this._getLayoutDefaults(newLayout);
+    const config: EnergyPeriodSelectorPlusConfig = {
+      ...this._config,
+      layout_mode: newLayout,
+      button_font_size: base.button_font_size,
+      date_font_size: base.date_font_size,
+      button_min_width: base.button_min_width,
+      gap: base.gap,
+    };
+    this._config = config;
+    fireEvent(this, 'config-changed', { config });
+  }
+
+  private _getLayoutDefaults(layoutMode: string) {
+    if (layoutMode === 'compact') {
+      return { button_font_size: 10, date_font_size: 12, button_min_width: 35, gap: 4 };
+    }
+    if (layoutMode === 'wide') {
+      return { button_font_size: 13, date_font_size: 18, button_min_width: 56, gap: 12 };
+    }
+    return { button_font_size: 11, date_font_size: 16, button_min_width: 40, gap: 8 };
+  }
+
+  private _resetAdvancedAppearance(): void {
+    if (!this._config) return;
+    const layoutMode = this._config.layout_mode ?? 'standard';
+    const base = this._getLayoutDefaults(layoutMode);
+    const config: EnergyPeriodSelectorPlusConfig = {
+      ...this._config,
+      button_font_size: base.button_font_size,
+      date_font_size: base.date_font_size,
+      button_min_width: base.button_min_width,
+      gap: base.gap,
+    };
+    fireEvent(this, 'config-changed', { config });
   }
 
 
@@ -419,6 +553,21 @@ export class EnergyPeriodSelectorEditor extends LitElement implements LovelaceCa
       ha-select,
       ha-entity-picker {
         width: 100%;
+      }
+      .layout-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 24px;
+      }
+      .layout-row ha-selector {
+        flex: 1;
+      }
+      .layout-reset-button {
+        flex: 0 0 auto;
+      }
+      .sync-container {
+        min-height: 180px;
       }
     `;
   }

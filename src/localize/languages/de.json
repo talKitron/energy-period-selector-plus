@@ -53,7 +53,27 @@
       "layout_mode": "Layout-Modus",
       "layout_mode_options": {
         "standard": "Standard (Standard)",
-        "compact": "Kompakt"
+        "compact": "Kompakt",
+        "wide": "Breit"
+      },
+      "density": "Dichte",
+      "density_options": {
+        "normal": "Normal",
+        "compact": "Kompakt",
+        "comfortable": "Komfortabel"
+      },
+      "button_group_width": "Button-Gruppenbreite",
+      "button_group_width_options": {
+        "auto": "Auto",
+        "full": "Voll"
+      },
+      "advanced_appearance_section": "Erweiterte Darstellung",
+      "button_font_size": "Button-Schriftgröße (px)",
+      "date_font_size": "Datums-Schriftgröße (px)",
+      "button_min_width": "Button-Mindestbreite (px)",
+      "gap": "Abstand (px)",
+      "button_type_options": {
+        "none": "Keine"
       }
     },
     "entity_types": {
